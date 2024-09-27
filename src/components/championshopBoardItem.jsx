@@ -15,7 +15,9 @@ export default function ChampionshpBoardItem(props) {
              { state:  {
                     fixtureId: props.fixture.id,
                     championshipId:props.league.id,
-                    matchDay:props.currentMatchDay
+                    matchDay:props.currentMatchDay,
+                    homeTeam:props.homeTeam,
+                    awayTeam:props.awayTeam
                 }}
              )}>
              <div className="logoSize"> <img className="logoSize" src={props.homeTeam.logo}/></div> 

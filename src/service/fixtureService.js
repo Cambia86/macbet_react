@@ -16,9 +16,9 @@ export const FixtureAPI = {
     return response.data
   },
 
-  getMatchDetail: async function (fixtureId,championshipId, cancel = false) {
+  getMatchDetail: async function (fixtureId,championshipId,matchDay,homeTeam,awayTeam, cancel = false) {
     const response = await api.request({
-      url: `/fixtures/singleFixture/${fixtureId}/${championshipId}`,
+      url: `/fixtures/picchetto/${championshipId}/${matchDay}/${homeTeam.id}//${awayTeam.id}`,
       method: "GET",
       // retrieving the signal value by using the property name
       signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,

@@ -12,10 +12,10 @@ export default function MatchDetail(props) {
 
     useEffect(() => {
         getMatchDetail()
-    });
+    }, []);
 
     const getMatchDetail = () => {
-        FixtureAPI.getMatchDetail(state.fixtureId,state.championshipId, true).then((myjson) => {
+        FixtureAPI.getMatchDetail(state.fixtureId,state.championshipId,state.matchDay,state.homeTeam,state.awayTeam, true).then((myjson) => {
             let  cw;
             setMatchDetail(myjson.result);
             // cw = myjson.result.slice(0, 10)
