@@ -69,7 +69,7 @@ function App() {
     };
 
     const getChampionshipById = (id) => {
-        fetch(`http://127.0.0.1:3000/api/fixtures/${id}`, {
+        fetch(`https://macbet-be.glitch.me/api/fixtures/${id}`, {
             method: 'GET',
             headers: {
 
