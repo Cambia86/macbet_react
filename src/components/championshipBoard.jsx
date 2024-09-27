@@ -11,7 +11,7 @@ export default function ChampionshipBoard(props) {
     //  let currentMatchDay =1;
     const [currentMatchDay, setCurrentMatchDay] = useState([]);
     const [currentview, setCurrentview] = useState([]);
-
+    const [currentRealMatchDay,setRealCUrrentMatchday]= useState([]);
     const [champBoard, setChampionshipBoard] = useState([]);
 
     const [championshipList, setChampionshipList] = useState([]);
@@ -23,9 +23,11 @@ export default function ChampionshipBoard(props) {
         let cw
         if (props.data && props.data.length > 0) {
             cw = props.data.slice(0, 10)
-        } else
+        } else{
             cw = []
-
+        }
+        if(cw && cw.length>0)
+        setRealCUrrentMatchday(  parseInt(cw[0].league.round.substring(cw[0].league.round.length-2,cw[0].league.round.length)))
         setCurrentview(cw);
 
     }, []);
@@ -45,7 +47,9 @@ export default function ChampionshipBoard(props) {
             cw = champBoard.slice(0, 10)
         } else {
             cw = champBoard.slice(10 * currentMatchDay, 10 * currentMatchDay + 10)
-        } setCurrentview(cw);
+        } 
+        setRealCUrrentMatchday(  parseInt(cw[0].league.round.substring(cw[0].league.round.length-2,cw[0].league.round.length)))
+        setCurrentview(cw);
     }
     const forward = (e) => {
         setCurrentMatchDay(currentMatchDay + 1)
@@ -56,6 +60,8 @@ export default function ChampionshipBoard(props) {
             cw = champBoard.slice(10 * currentMatchDay, 10 * currentMatchDay + 10)
         }
 
+      
+        setRealCUrrentMatchday(  parseInt(cw[0].league.round.substring(cw[0].league.round.length-2,cw[0].league.round.length)))
         setCurrentview(cw);
     }
 
@@ -64,6 +70,7 @@ export default function ChampionshipBoard(props) {
             let  cw;
             setChampionshipBoard(myjson.result);
             cw = myjson.result.slice(0, 10)
+            setRealCUrrentMatchday(  parseInt(cw[0].league.round.substring(cw[0].league.round.length-2,cw[0].league.round.length)))
             setCurrentview(cw);
         })
 
@@ -97,6 +104,8 @@ export default function ChampionshipBoard(props) {
                 awayTeam={c.teams.away}
                 score={c.score}
                 fixture={c.fixture}
+                league={c.league}
+                currentMatchDay={currentRealMatchDay}
                 />
 
             })}</p>

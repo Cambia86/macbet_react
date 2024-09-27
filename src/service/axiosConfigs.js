@@ -3,7 +3,7 @@ import axios from "axios"
 // import { notification } from "antd"
 
 export const api = axios.create({
-    baseURL: "http://127.0.0.1:3000/api",
+    baseURL: "https://macbet-be.glitch.me/api",
 })
 
 // defining a custom error handler for all APIs
@@ -11,10 +11,6 @@ const errorHandler = (error) => {
     const statusCode = error.response?.status
 
     if (error.code === "ERR_CANCELED") {
-        // notification.error({
-        //     placement: "bottomRight",
-        //     description: "API canceled!",
-        // })
         return Promise.resolve()
     }
 
