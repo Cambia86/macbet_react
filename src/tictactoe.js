@@ -153,15 +153,15 @@ function Square(props) {
   }
 
   function handleClickData(){
-    useEffect(() => {
-        axios.get('http://localhost:3000/api/fixtures/135')
-          .then(response => {
-            // setPosts(response.data);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }, []);
+    // useEffect(() => {
+    //     axios.get('http://localhost:3000/api/fixtures/135')
+    //       .then(response => {
+    //         // setPosts(response.data);
+    //       })
+    //       .catch(error => {
+    //         console.error(error);
+    //       });
+    //   }, []);
 
     // const xhr = new XMLHttpRequest();
     // xhr.open('GET', 'http://localhost:3000/api/fixtures/135');
