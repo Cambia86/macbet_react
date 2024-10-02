@@ -27,6 +27,19 @@ export const FixtureAPI = {
     // returning the product returned by the API
     return response.data
   },
+
+  getStatsByTeamId:async function (teamId,championshipId, cancel = false) {
+    // api/fixtures/statsByTeamId/:champId/fixtureid
+    const response = await api.request({
+      url: `/fixtures/statsByTeamId/${teamId}/${championshipId}`,
+      method: "POST",
+      data: {},
+      // retrieving the signal value by using the property name
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    return response.data
+  }
 //   getAll: async function (id,cancel = false) {
 //     const response = await api.request({
 //       url: "/fixtures/:id",

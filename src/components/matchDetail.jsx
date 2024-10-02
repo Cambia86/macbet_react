@@ -10,6 +10,8 @@ import Table from 'react-bootstrap/Table';
 export default function MatchDetail(props) {
     const { state } = useLocation();
     const [matchDetail, setMatchDetail] = useState({});
+    const [homeTeamStats, setHomeTeamStats] = useState({});
+    const [awayTeamStats, setAwayTeamStats] = useState({});
     const [infoMatch, setInfoMatch] = useState({});
     let showDetail = false;
     const [showPage, setShowPage] = useState(false);
@@ -18,8 +20,7 @@ export default function MatchDetail(props) {
         setMatchDetail({})
         getMatchDetail()
         // getfixturestats
-        // api/fixtures/statsByTeamId/:champId/fixtureid(is teamId) ->hometeam
-        // api/fixtures/statsByTeamId/:champId/fixtureid(is teamId) -awayteam
+      
     }, []);
 
     const getMatchDetail = () => {
@@ -35,8 +36,16 @@ export default function MatchDetail(props) {
             setMatchDetail(myjson.result);
             let cw2;
             setShowPage(true);
-            // cw = myjson.result.slice(0, 10)
-            // setCurrentview(cw);
+
+            FixtureAPI.getStatsByTeamId(state.championshipId,state.homeTeam.id).then((resHomeTeamStats) => {
+                setHomeTeamStats(resHomeTeamStats);
+            })
+            FixtureAPI.getStatsByTeamId(state.championshipId,state.awayTeam.id).then((resAwayTeamStats) => {
+                setAwayTeamStats(resAwayTeamStats);
+            })
+            
+  // api/fixtures/statsByTeamId/:champId/fixtureid(is teamId) ->hometeam
+        // api/fixtures/statsByTeamId/:champId/fixtureid(is teamId) -awayteam
         })
 
     }
