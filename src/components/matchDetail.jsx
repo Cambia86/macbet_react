@@ -41,6 +41,24 @@ export default function MatchDetail(props) {
 
     }
 
+    const checkColor = (value) => {
+        let valInt= parseInt(value)
+        if(valInt>80)
+            return "lightgreen";
+        if(valInt<80 && valInt>=75)
+            return "green"; 
+        if(valInt<75 && valInt>=60)
+            return "darkgreen"; 
+        if(valInt<60 && valInt>=45)
+                return "yellow";
+        if(valInt<45 && valInt>=30)
+            return "orange";
+        if(valInt<30 && valInt>=15)
+            return "red";
+        if(valInt<15 )
+            return "darkred";
+      };
+
     return (
         <Container >
             {showPage &&
@@ -76,24 +94,24 @@ export default function MatchDetail(props) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1-3</td>
-                        <th>{matchDetail.multi_casa_13.quotaPerc}</th>
-                        <th>{matchDetail.multi_trasf_13.quotaPerc}</th>
+                        <td  >1-3</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_casa_13.quotaPerc)}` }}>{matchDetail.multi_casa_13.quotaPerc}</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_trasf_13.quotaPerc)}` }}>{matchDetail.multi_trasf_13.quotaPerc}</td>
                     </tr>
                     <tr>
-                        <td>1-4</td>
-                        <th>{matchDetail.multi_casa_14.quotaPerc}</th>
-                        <th>{matchDetail.multi_trasf_14.quotaPerc}</th>
+                        <td >1-4</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_casa_14.quotaPerc)}` }}>{matchDetail.multi_casa_14.quotaPerc}</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_trasf_14.quotaPerc)}` }}>{matchDetail.multi_trasf_14.quotaPerc}</td>
                     </tr>
                     <tr>
-                        <td>2-4</td>
-                        <th>{matchDetail.multi_casa_24.quotaPerc}</th>
-                        <th>{matchDetail.multi_trasf_24.quotaPerc}</th>
+                        <td >2-4</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_casa_24.quotaPerc)}` }}>{matchDetail.multi_casa_24.quotaPerc}</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_trasf_24.quotaPerc)}` }}>{matchDetail.multi_trasf_24.quotaPerc}</td>
                     </tr>
                     <tr>
-                        <td>3-9</td>
-                        <th>{matchDetail.multi_casa_39.quotaPerc}</th>
-                        <th>{matchDetail.multi_trasf_39.quotaPerc}</th>
+                        <td >3-9</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_casa_39.quotaPerc)}` }}>{matchDetail.multi_casa_39.quotaPerc}</td>
+                        <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.multi_trasf_39.quotaPerc)}` }}>{matchDetail.multi_trasf_39.quotaPerc}</td>
                     </tr>
                 </tbody>
             </Table>}
@@ -111,33 +129,33 @@ export default function MatchDetail(props) {
                     <tbody>
                         <tr>
                             <td>0,5 1T</td>
-                            <th>{matchDetail.under_051T.quotaPerc}</th>
-                            <th>{matchDetail.over_051T.quotaPerc}</th>
+                            <td  style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_051T.quotaPerc)}` }}>{matchDetail.under_051T.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.over_051T.quotaPerc)}` }}>{matchDetail.over_051T.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>0,5</td>
-                            <th>{matchDetail.under_05.quotaPerc}</th>
-                            <th>{matchDetail.over_05.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_05.quotaPerc)}` }}>{matchDetail.under_05.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.over_05.quotaPerc)}` }}>{matchDetail.over_05.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>1,5</td>
-                            <th>{matchDetail.under_15.quotaPerc}</th>
-                            <th>{matchDetail.over_15.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_15.quotaPerc)}` }}>{matchDetail.under_15.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.over_15.quotaPerc)}` }}>{matchDetail.over_15.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>2,5</td>
-                            <th>{matchDetail.under_25.quotaPerc}</th>
-                            <th>{matchDetail.over_25.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_25.quotaPerc)}` }}>{matchDetail.under_25.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.over_25.quotaPerc)}` }}>{matchDetail.over_25.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>3,5</td>
-                            <th>{matchDetail.under_35.quotaPerc}</th>
-                            <th>{matchDetail.over_35.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_35.quotaPerc)}` }}>{matchDetail.under_35.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.over_35.quotaPerc)}` }}>{matchDetail.over_35.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>4,5</td>
-                            <th>{matchDetail.under_45.quotaPerc}</th>
-                            <th>{matchDetail.over_45.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_45.quotaPerc)}` }}>{matchDetail.under_45.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.over_45.quotaPerc)}` }}>{matchDetail.over_45.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -155,28 +173,28 @@ export default function MatchDetail(props) {
                     <tbody>
                         <tr>
                             <td>0</td>
-                            <th>{matchDetail.casaSegna0Goal.quotaPerc}</th>
-                            <th>{matchDetail.fuoriSegna0Goal.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.casaSegna0Goal.quotaPerc)}` }}>{matchDetail.casaSegna0Goal.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.fuoriSegna0Goal.quotaPerc)}` }}>{matchDetail.fuoriSegna0Goal.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>1</td>
-                            <th>{matchDetail.casaSegna1Goal.quotaPerc}</th>
-                            <th>{matchDetail.fuoriSegna1Goal.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.casaSegna1Goal.quotaPerc)}` }}>{matchDetail.casaSegna1Goal.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.fuoriSegna1Goal.quotaPerc)}` }}>{matchDetail.fuoriSegna1Goal.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>2</td>
-                            <th>{matchDetail.casaSegna2Goal.quotaPerc}</th>
-                            <th>{matchDetail.fuoriSegna2Goal.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.casaSegna2Goal.quotaPerc)}` }}>{matchDetail.casaSegna2Goal.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.fuoriSegna2Goal.quotaPerc)}` }}>{matchDetail.fuoriSegna2Goal.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>3</td>
-                            <th>{matchDetail.casaSegna3Goal.quotaPerc}</th>
-                            <th>{matchDetail.fuoriSegna3Goal.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.casaSegna3Goal.quotaPerc)}` }}>{matchDetail.casaSegna3Goal.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.fuoriSegna3Goal.quotaPerc)}` }}>{matchDetail.fuoriSegna3Goal.quotaPerc}</td>
                         </tr>
                         <tr>
                             <td>4</td>
-                            <th>{matchDetail.casaSegna4Goal.quotaPerc}</th>
-                            <th>{matchDetail.fuoriSegna4Goal.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.casaSegna4Goal.quotaPerc)}` }}>{matchDetail.casaSegna4Goal.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.fuoriSegna4Goal.quotaPerc)}` }}>{matchDetail.fuoriSegna4Goal.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -194,9 +212,9 @@ export default function MatchDetail(props) {
                     </thead>
                     <tbody>
                         <tr>
-                            <th>{matchDetail.winHomeTiriTotali.quotaPerc}</th>
-                            <th>{matchDetail.drawTiriTotali.quotaPerc}</th>
-                            <th>{matchDetail.winAwayTiriTotali.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winHomeTiriTotali.quotaPerc)}` }}>{matchDetail.winHomeTiriTotali.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.drawTiriTotali.quotaPerc)}` }}>{matchDetail.drawTiriTotali.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winAwayTiriTotali.quotaPerc)}` }}>{matchDetail.winAwayTiriTotali.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -214,9 +232,9 @@ export default function MatchDetail(props) {
                     </thead>
                     <tbody>
                         <tr>
-                            <th>{matchDetail.winHomeTiriPorta.quotaPerc}</th>
-                            <th>{matchDetail.drawTiriPorta.quotaPerc}</th>
-                            <th>{matchDetail.winAwayTiriPorta.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winHomeTiriPorta.quotaPerc)}` }}>{matchDetail.winHomeTiriPorta.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.drawTiriPorta.quotaPerc)}` }}>{matchDetail.drawTiriPorta.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winAwayTiriPorta.quotaPerc)}` }}>{matchDetail.winAwayTiriPorta.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -234,16 +252,16 @@ export default function MatchDetail(props) {
                     </thead>
                     <tbody>
                         <tr>
-                            <th>{matchDetail.winHomeCorner.quotaPerc}</th>
-                            <th>{matchDetail.drawCorner.quotaPerc}</th>
-                            <th>{matchDetail.winAwayCorner.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winHomeCorner.quotaPerc)}` }}>{matchDetail.winHomeCorner.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.drawCorner.quotaPerc)}` }}>{matchDetail.drawCorner.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winAwayCorner.quotaPerc)}` }}>{matchDetail.winAwayCorner.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>
             }
 
-             {/* falli */}
-             {showPage &&
+            {/* falli */}
+            {showPage &&
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -254,16 +272,16 @@ export default function MatchDetail(props) {
                     </thead>
                     <tbody>
                         <tr>
-                            <th>{matchDetail.winHomeFalli.quotaPerc}</th>
-                            <th>{matchDetail.drawFalli.quotaPerc}</th>
-                            <th>{matchDetail.winAwayFalli.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winHomeFalli.quotaPerc)}` }}>{matchDetail.winHomeFalli.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.drawFalli.quotaPerc)}` }}>{matchDetail.drawFalli.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winAwayFalli.quotaPerc)}` }}>{matchDetail.winAwayFalli.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>
             }
 
-               {/* fuorigioco */}
-               {showPage &&
+            {/* fuorigioco */}
+            {showPage &&
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -274,17 +292,16 @@ export default function MatchDetail(props) {
                     </thead>
                     <tbody>
                         <tr>
-                            <th>{matchDetail.winHomeFuorigioco.quotaPerc}</th>
-               
-                            <th>{matchDetail.drawFurigioco.quotaPerc}</th>
-                            <th>{matchDetail.winAwayFuorigioco.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winHomeFuorigioco.quotaPerc)}` }}>{matchDetail.winHomeFuorigioco.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.drawFurigioco.quotaPerc)}` }}>{matchDetail.drawFurigioco.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winAwayFuorigioco.quotaPerc)}` }}>{matchDetail.winAwayFuorigioco.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>
             }
 
-                 {/* cartellin */}
-                 {showPage &&
+            {/* cartellin */}
+            {showPage &&
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -295,9 +312,9 @@ export default function MatchDetail(props) {
                     </thead>
                     <tbody>
                         <tr>
-                            <th>{matchDetail.winHomeCartellini.quotaPerc}</th>
-                            <th>{matchDetail.drawCartellini.quotaPerc}</th>
-                            <th>{matchDetail.winAwayCartellini.quotaPerc}</th>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winHomeCartellini.quotaPerc)}` }}>{matchDetail.winHomeCartellini.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.drawCartellini.quotaPerc)}` }}>{matchDetail.drawCartellini.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.winAwayCartellini.quotaPerc)}` }}>{matchDetail.winAwayCartellini.quotaPerc}</td>
                         </tr>
                     </tbody>
                 </Table>

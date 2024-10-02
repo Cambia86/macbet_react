@@ -23,7 +23,7 @@ export default function ChampionshpBoardItem(props) {
     }
     return (
         <Container>
-             <Row key={props.fixture.id}  onClick={navigatePage}>
+             <Row style={{padding:10}} key={props.fixture.id}  onClick={navigatePage}>
              <div className="logoSize"> <img className="logoSize" src={props.homeTeam.logo}/></div> 
                  <Column>{props.homeTeam.name}</Column>
                  <Column>{props.score.fulltime.home} - {props.score.fulltime.away}</Column>
