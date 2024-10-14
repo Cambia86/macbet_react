@@ -153,6 +153,10 @@ textarea {
     margin-bottom: 50px; 
 }
 
+.noBullet{
+    list-style-type: none;
+}
+
 .logoSize{
     width: 30px;
     height: 30px;

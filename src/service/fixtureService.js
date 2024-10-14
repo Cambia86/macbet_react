@@ -39,7 +39,19 @@ export const FixtureAPI = {
     })
 
     return response.data
-  }
+  },
+
+  getPrevisionList: async function ( cancel = false) {
+    const response = await api.request({
+      url: `/fixtures/picchetti/all/list`,
+      method: "GET",
+      // retrieving the signal value by using the property name
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    // returning the product returned by the API
+    return response.data
+  },
 //   getAll: async function (id,cancel = false) {
 //     const response = await api.request({
 //       url: "/fixtures/:id",

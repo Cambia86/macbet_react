@@ -59,6 +59,9 @@ export default function ChampionshipBoard(props) {
         let d = [];
         d.push({ "id": "135", "name": "Serie A" });
         d.push({ "id": "39", "name": "Premier" });
+        d.push({ "id": "140", "name": "Liga" });
+        d.push({ "id": "61", "name": "Ligue1" });
+        d.push({ "id": "78", "name": "BundesLiga" });
         setChampionshipList(d)
     }
 
@@ -110,6 +113,19 @@ export default function ChampionshipBoard(props) {
             setCurrentview(cw);
             window.localStorage.setItem('currentCahmpionshipMatches', JSON.stringify(myjson.result));
         })
+    }
+
+    const navigatePage=()=>{
+        navigate('/previsionList',
+            // { state:  {
+            //        fixtureId: props.fixture.id,
+            //        championshipId:props.league.id,
+            //        matchDay:props.currentMatchDay,
+            //        homeTeam:props.homeTeam,
+            //        awayTeam:props.awayTeam,
+            //        score:props.score
+            //    }}
+            );
     }
 
     return (

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddPost from './components/addPost';
 import Post from './components/post';
 import ChampionshipBoard from './components/championshipBoard';
+import PrevisionList from  './components/previsionList';
 import Championship from './components/championship';
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
@@ -108,7 +109,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<ChampionshipBoard />} />
-                        <Route path="blogs" element={<Blogs />} />
+                        <Route path="previsionList" element={<PrevisionList />} />
                         <Route path="contact" element={<Contact />} />
                         <Route path="details" element={<MatchDetail />} />
                         <Route path="*" element={<NoPage />} />
