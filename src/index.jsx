@@ -3,7 +3,6 @@ import { useState, useEffect ,createContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddPost from './components/addPost';
-import Post from './components/post';
 import ChampionshipBoard from './components/championshipBoard';
 import PrevisionList from  './components/previsionList';
 import Championship from './components/championship';

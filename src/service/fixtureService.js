@@ -52,6 +52,21 @@ export const FixtureAPI = {
     // returning the product returned by the API
     return response.data
   },
+
+  getPicchettiByName: async function (picchettoName, cancel = false) {
+    const response = await api.request({
+      url: `/fixtures/picchetti/getbyname/name/${picchettoName}`,
+      method: "GET",
+      // retrieving the signal value by using the property name
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    // returning the product returned by the API
+    return response.data
+  },
+
+  
+
 //   getAll: async function (id,cancel = false) {
 //     const response = await api.request({
 //       url: "/fixtures/:id",
