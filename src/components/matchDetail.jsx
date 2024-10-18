@@ -31,6 +31,10 @@ export default function MatchDetail(props) {
             awayTeam: state.awayTeam,
             score: state.score
         })
+        // if(state.previsionjson){
+        //     setMatchDetail(state.previsionjson);
+        // }else
+
         FixtureAPI.getMatchDetail(state.fixtureId, state.championshipId, state.matchDay, state.homeTeam, state.awayTeam, true).then((myjson) => {
             let cw;
             setMatchDetail(myjson.result);
@@ -52,7 +56,7 @@ export default function MatchDetail(props) {
 
     const checkColor = (value) => {
         let valInt= parseInt(value)
-        if(valInt>80)
+        if(valInt>=80)
             return "lightgreen";
         if(valInt<80 && valInt>=75)
             return "green"; 

@@ -9,7 +9,8 @@ import PrevisionItemContent from './previsionItemContent'
 export default function PrevisionList(props) {
     const [prevList, setprevList] = useState([]);
     const [picchettoItems, setpicchettoItems] = useState([]);
-
+    const [selectedOption, setSelectedOption] = useState([]);
+   
 
     const getPrevisionList = () => {
         FixtureAPI.getPrevisionList().then((prevJson) => {
@@ -21,10 +22,14 @@ export default function PrevisionList(props) {
 
     useEffect(() => {
         let _currentPicchetti = getFromLocalStorage('currentPicchettiList')
+        let _currentPicchettoItem = getFromLocalStorage('currentPicchettoItem')
         if (_currentPicchetti != null) {
             setprevList(_currentPicchetti);
         } else {
             getPrevisionList();
+        }
+        if(_currentPicchettoItem){
+            setpicchettoItems(_currentPicchettoItem);
         }
     }, [])
 
@@ -32,7 +37,7 @@ export default function PrevisionList(props) {
         // alert(pItemDate)
         FixtureAPI.getPicchettiByName(pItemDate).then((prevJson) => {
             setpicchettoItems(prevJson);
-
+            saveToLocalStorage('currentPicchettoItem', prevJson)
         });
     }
 
@@ -49,25 +54,35 @@ export default function PrevisionList(props) {
             return null
     }
 
+    const handleChange = (value) => {
+        setSelectedOption(value)
+        getPrevisionbydate(value);
+    }
+
+
+   
 
     return (
         <div className="">
             <Container>
                 <Row>
-                    <Column xs={3} md={2}>
-                        <ul>
-                            {prevList && prevList.length > 0 && prevList.map((pl, i) => {
-                                return <PrevisionItemList
-                                    key={i}
-                                    item={pl}
-                                    getprevisionbydate={getPrevisionbydate}
-                                />
-                            })}
-                        </ul>
+                    <Column>
+                        {prevList && prevList.length > 0 &&
+                            <select
+                                value={selectedOption}
+                                onChange={e => handleChange(e.target.value, setSelectedOption)}>
+                                {prevList.map(o => (
+                                    <option key={o} value={o}>{o}</option>
+                                ))}
+                            </select>
+                        }
                     </Column>
+                </Row>
+                <Row>
+                
                     <Column xs={12} md={8}>
-                        {picchettoItems && picchettoItems.result && picchettoItems.result.length > 0 && picchettoItems.result.map((pi,i) => {
-                           return <PrevisionItemContent   key={i} picchettoItem={pi}></PrevisionItemContent>
+                        {picchettoItems && picchettoItems.result && picchettoItems.result.length > 0 && picchettoItems.result.map((pi, i) => {
+                            return <PrevisionItemContent key={i} picchettoItem={pi}></PrevisionItemContent>
                         })}
                     </Column>
                 </Row>
