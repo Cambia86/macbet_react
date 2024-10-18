@@ -115,6 +115,16 @@ export default function ChampionshipBoard(props) {
         })
     }
 
+    
+    const navigaHome=()=>{
+        navigate('/');
+    }
+
+    const navigaPrevision=()=>{
+        navigate('/previsionList');
+    }
+
+    // previsionList
     const navigatePage=()=>{
         navigate('/previsionList',
             // { state:  {
@@ -131,6 +141,12 @@ export default function ChampionshipBoard(props) {
     return (
         <div className="">
             <Container>
+            <Row>
+            <Column xs>
+            <button class="buttonNavigation" onClick={() => navigaHome()} >home</button>
+            <button class="buttonNavigation" onClick={() => navigaPrevision()} >previsioni</button>
+            </Column>
+            </Row>
                 <Row>
                     {championshipList.map((champ) =>
                         <Column xs>
@@ -141,11 +157,11 @@ export default function ChampionshipBoard(props) {
             </Container>
             <Container>
                 <Row>
-                    <Column>    <button
+                    <Column>    <button  class="buttonNavigation" 
                         onClick={() => back()}
                     >back</button></Column>
                      <Column>  <div>{currentRealMatchDay}</div>  </Column>
-                    <Column>   <button
+                    <Column>   <button  class="buttonNavigation" 
                         onClick={() => forward()}
                     >forward</button></Column>
                 </Row>

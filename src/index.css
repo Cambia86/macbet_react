@@ -180,3 +180,15 @@ textarea {
     transform: scale(1.1);
      transition: all, 0.5s;
 }
+
+.buttonNavigation{
+    /* position: absolute; */
+    top: 50%;
+    background-color: #14259f;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px 2px rgb(0,0,0);
+    margin: 10px;
+    padding: 5px;
+}
