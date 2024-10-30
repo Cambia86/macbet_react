@@ -13,8 +13,10 @@ export default function ChampionshipBoard(props) {
     //  let currentMatchDay =1;
     const [currentMatchDay, setCurrentMatchDay] = useState([]);
     const [currentview, setCurrentview] = useState([]);
-    const [currentRealMatchDay, setRealCUrrentMatchday] = useState([]);
+    const [currentRealMatchDay, setRealCUrrentMatchday] = useState(1);
+    const [currentChampioshipSelected, setCurrentChampioshipSelected] = useState([]);
     const [champBoard, setChampionshipBoard] = useState([]);
+    const [selectedOption, setSelectedOption] = useState('135');
 
     const [championshipList, setChampionshipList] = useState([]);
     const navigate = useNavigate();
@@ -40,14 +42,19 @@ export default function ChampionshipBoard(props) {
 
         let _currentmatches = window.localStorage.getItem('currentCahmpionshipMatches') != "" ? JSON.parse(window.localStorage.getItem('currentCahmpionshipMatches')) : null;
         if (_currentmatches && _currentmatches.length > 0) {
-            cw = _currentmatches.filter(d=>d.league.round.substring(d.league.round.length - 2, d.league.round.length)==_currentMatchDay
-            && new Date(d.fixture.date).getTime()> new Date('2024-07-01').getTime())
+            cw = _currentmatches.filter(d => d.league.round.substring(d.league.round.length - 2, d.league.round.length) == _currentMatchDay
+                && new Date(d.fixture.date).getTime() > new Date('2024-07-01').getTime())
             setChampionshipBoard(_currentmatches);
         } else {
             cw = []
         }
         if (cw && cw.length > 0) {
-            let _currentRealMatchDay=parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length));
+            let _currentRealMatchDay;
+            if (currentChampioshipSelected == 2) {
+                _currentRealMatchDay= _currentMatchDay
+            } else {
+                _currentRealMatchDay = parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length));
+            } 
             setRealCUrrentMatchday(_currentRealMatchDay)
             saveToLocalStorage('currentMatchDay', _currentRealMatchDay)
         }
@@ -62,39 +69,56 @@ export default function ChampionshipBoard(props) {
         d.push({ "id": "140", "name": "Liga" });
         d.push({ "id": "61", "name": "Ligue1" });
         d.push({ "id": "78", "name": "BundesLiga" });
+        d.push({ "id": "2", "name": "Champions League" });
         setChampionshipList(d)
     }
 
 
     const back = (e) => {
         setCurrentMatchDay(currentMatchDay - 1)
-        let _currentRealMatchDay =currentRealMatchDay - 1
+        let _currentRealMatchDay = currentRealMatchDay - 1
         setRealCUrrentMatchday(_currentRealMatchDay)
         let start, end, cw;
         if (currentMatchDay == 0) {
             cw = champBoard.slice(0, 10)
         } else {
             // cw = champBoard.slice(10 * currentRealMatchDay, 10 * currentRealMatchDay + 10)
+            if (currentChampioshipSelected == 2) {
+                start=currentMatchDay*10;
+                end=(currentMatchDay*10)- 10;
+                cw = champBoard.slice( end,start)
+            }
+            else {
+                cw = champBoard.filter(d => d.league.round.substring(d.league.round.length - 2, d.league.round.length) == _currentRealMatchDay
+                    && new Date(d.fixture.date).getTime() > new Date('2024-07-01').getTime())
+            }
 
-            cw =  champBoard.filter(d=>d.league.round.substring(d.league.round.length - 2, d.league.round.length)==_currentRealMatchDay
-                && new Date(d.fixture.date).getTime()> new Date('2024-07-01').getTime())
+            // cw = champBoard.filter(d => d.league.round.substring(d.league.round.length - 2, d.league.round.length) == _currentRealMatchDay
+            //     && new Date(d.fixture.date).getTime() > new Date('2024-07-01').getTime())
         }
         // setRealCUrrentMatchday(parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length)))
         setCurrentview(cw);
-        saveToLocalStorage('currentMatchDay',_currentRealMatchDay)
+        saveToLocalStorage('currentMatchDay', _currentRealMatchDay)
     }
 
     const forward = (e) => {
         setCurrentMatchDay(currentMatchDay + 1)
-        let _currentRealMatchDay =currentRealMatchDay + 1
-        setRealCUrrentMatchday(_currentRealMatchDay )
+        let _currentRealMatchDay = currentRealMatchDay + 1
+        setRealCUrrentMatchday(_currentRealMatchDay)
         let start, end, cw;
         if (currentMatchDay == 0) {
             cw = champBoard.slice(0, 10)
         } else {
-            cw =  champBoard.filter(d=>d.league.round.substring(d.league.round.length - 2, d.league.round.length)==_currentRealMatchDay
-            && new Date(d.fixture.date).getTime()> new Date('2024-07-01').getTime())
-        
+            if (currentChampioshipSelected == 2) {
+                start=currentMatchDay*10;
+                end=(currentMatchDay*10)+ 10
+                cw = champBoard.slice(start, end)
+            }
+            else {
+                cw = champBoard.filter(d => d.league.round.substring(d.league.round.length - 2, d.league.round.length) == _currentRealMatchDay
+                    && new Date(d.fixture.date).getTime() > new Date('2024-07-01').getTime())
+            }
+
         }
 
         // setRealCUrrentMatchday(parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length)))
@@ -104,28 +128,39 @@ export default function ChampionshipBoard(props) {
 
 
     const getChampionshipById = (id) => {
+        setCurrentChampioshipSelected(id);
         FixtureAPI.get(id, true).then((myjson) => {
             let cw;
+            let currMatchDay=0;
+            if(currentRealMatchDay!=null){
+                let from =10*(currentRealMatchDay-1)
+                let to =from+10
+                cw = myjson.result.slice(from, to)
+            }else{
+                cw = myjson.result.slice(0, 10)
+                currMatchDay = parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length))
+                setRealCUrrentMatchday(currMatchDay)
+            }
+            
             setChampionshipBoard(myjson.result);
-            cw = myjson.result.slice(0, 10)
-            let currMatchDay=parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length))
-            setRealCUrrentMatchday(currMatchDay)
+            
+            
             setCurrentview(cw);
             window.localStorage.setItem('currentCahmpionshipMatches', JSON.stringify(myjson.result));
         })
     }
 
-    
-    const navigaHome=()=>{
+
+    const navigaHome = () => {
         navigate('/');
     }
 
-    const navigaPrevision=()=>{
+    const navigaPrevision = () => {
         navigate('/previsionList');
     }
 
     // previsionList
-    const navigatePage=()=>{
+    const navigatePage = () => {
         navigate('/previsionList',
             // { state:  {
             //        fixtureId: props.fixture.id,
@@ -135,33 +170,61 @@ export default function ChampionshipBoard(props) {
             //        awayTeam:props.awayTeam,
             //        score:props.score
             //    }}
-            );
+        );
+    }
+
+    const handleChange = (value) => {
+        setSelectedOption(value)
+        getChampionshipById(value)
+    }
+
+    const downloadResults=(value)=>{
+        let _cwids=currentview.map(d=>{return {"id":d.fixture.id}})
+
+        FixtureAPI.downloadResults(selectedOption,_cwids, true).then((myjson) => {
+            getChampionshipById(currentChampioshipSelected)
+        })
+    }
+
+    const refreshData=()=>{
+        getChampionshipById(currentChampioshipSelected)
     }
 
     return (
         <div className="">
             <Container>
-            <Row>
-            <Column xs>
-            <button class="buttonNavigation" onClick={() => navigaHome()} >home</button>
-            <button class="buttonNavigation" onClick={() => navigaPrevision()} >previsioni</button>
-            </Column>
-            </Row>
                 <Row>
-                    {championshipList.map((champ) =>
-                        <Column xs>
-                            <Championship id={champ.id} name={champ.name} getChampionshipById={getChampionshipById} />
-                        </Column>
-                    )}
+                    <Column xs>
+                        <button class="buttonNavigation" onClick={() => navigaHome()} >home</button>
+                        <button class="buttonNavigation" onClick={() => navigaPrevision()} >previsioni</button>
+                    </Column>
+                </Row>
+
+                      <Row>
+                    <Column>
+                        {championshipList && championshipList.length > 0 &&
+                            <select
+                                value={selectedOption}
+                                onChange={e => handleChange(e.target.value, setSelectedOption)}>
+                                {championshipList.map(o => (
+                                    <option key={o.id} value={o.id}>{o.name}</option>
+                                ))}
+                            </select>
+                        }
+                    </Column>
+                    <Column xs>
+                    <button  class="buttonNavigation" 
+                         onClick={() => downloadResults()}>download</button> 
+                    </Column>
                 </Row>
             </Container>
             <Container>
                 <Row>
-                    <Column>    <button  class="buttonNavigation" 
+                    <Column>    <button class="buttonNavigation"
                         onClick={() => back()}
                     >back</button></Column>
-                     <Column>  <div>{currentRealMatchDay}</div>  </Column>
-                    <Column>   <button  class="buttonNavigation" 
+                    <Column>  <div>{currentRealMatchDay}</div>  </Column>
+                    <Column>   <button class="buttonNavigation"
                         onClick={() => forward()}
                     >forward</button></Column>
                 </Row>
@@ -175,6 +238,9 @@ export default function ChampionshipBoard(props) {
                     fixture={c.fixture}
                     league={c.league}
                     currentMatchDay={currentRealMatchDay}
+                    homeTeamStats={c.statistics_home}
+                    awayTeamStats={c.statistics_away}
+                    refreshData={refreshData}
                 // navigateDetail={navigateDetail}
                 />
 
