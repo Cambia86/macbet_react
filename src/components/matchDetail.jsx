@@ -20,7 +20,7 @@ export default function MatchDetail(props) {
         setMatchDetail({})
         getMatchDetail()
         // getfixturestats
-      
+
     }, []);
 
     const getMatchDetail = () => {
@@ -29,7 +29,9 @@ export default function MatchDetail(props) {
             matchDay: state.matchDay,
             homeTeam: state.homeTeam,
             awayTeam: state.awayTeam,
-            score: state.score
+            score: state.score,
+            statistics_home:state.statistics_home,
+            statistics_away:state.statistics_away
         })
         // if(state.previsionjson){
         //     setMatchDetail(state.previsionjson);
@@ -41,36 +43,32 @@ export default function MatchDetail(props) {
             let cw2;
             setShowPage(true);
 
-            FixtureAPI.getStatsByTeamId(state.championshipId,state.homeTeam.id).then((resHomeTeamStats) => {
+            FixtureAPI.getStatsByTeamId(state.championshipId, state.homeTeam.id).then((resHomeTeamStats) => {
                 setHomeTeamStats(resHomeTeamStats);
             })
-            FixtureAPI.getStatsByTeamId(state.championshipId,state.awayTeam.id).then((resAwayTeamStats) => {
+            FixtureAPI.getStatsByTeamId(state.championshipId, state.awayTeam.id).then((resAwayTeamStats) => {
                 setAwayTeamStats(resAwayTeamStats);
             })
-            
-  // api/fixtures/statsByTeamId/:champId/fixtureid(is teamId) ->hometeam
-        // api/fixtures/statsByTeamId/:champId/fixtureid(is teamId) -awayteam
         })
-
     }
 
     const checkColor = (value) => {
-        let valInt= parseInt(value)
-        if(valInt>=80)
+        let valInt = parseInt(value)
+        if (valInt >= 80)
             return "lightgreen";
-        if(valInt<80 && valInt>=75)
-            return "green"; 
-        if(valInt<75 && valInt>=60)
-            return "darkgreen"; 
-        if(valInt<60 && valInt>=45)
-                return "yellow";
-        if(valInt<45 && valInt>=30)
+        if (valInt < 80 && valInt >= 75)
+            return "green";
+        if (valInt < 75 && valInt >= 60)
+            return "darkgreen";
+        if (valInt < 60 && valInt >= 45)
+            return "yellow";
+        if (valInt < 45 && valInt >= 30)
             return "orange";
-        if(valInt<30 && valInt>=15)
+        if (valInt < 30 && valInt >= 15)
             return "red";
-        if(valInt<15 )
+        if (valInt < 15)
             return "darkred";
-      };
+    };
 
     return (
         <Container >
@@ -142,7 +140,7 @@ export default function MatchDetail(props) {
                     <tbody>
                         <tr>
                             <td>0,5 1T</td>
-                            <td  style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_051T.quotaPerc)}` }}>{matchDetail.under_051T.quotaPerc}</td>
+                            <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.under_051T.quotaPerc)}` }}>{matchDetail.under_051T.quotaPerc}</td>
                             <td style={{ 'color': 'white', 'background-color': `${checkColor(matchDetail.over_051T.quotaPerc)}` }}>{matchDetail.over_051T.quotaPerc}</td>
                         </tr>
                         <tr>
@@ -218,9 +216,10 @@ export default function MatchDetail(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Tiri Totali</th>
-                            <th></th>
+                            <th>F:{matchDetail.mediaTiriTotaliCasaFatti.quotaPerc} S:{matchDetail.mediaTiriTotaliCasaSubiti.quotaPerc}</th>
+                            <th>Tiri Totali {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
+                               infoMatch.statistics_home.statistics[2].value + " - "  +infoMatch.statistics_away.statistics[2].value:""} </th>
+                            <th>F:{matchDetail.mediaTiriTotaliFuoriFatti.quotaPerc} S:{matchDetail.mediaTiriTotaliFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -238,9 +237,10 @@ export default function MatchDetail(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Tiri in porta</th>
-                            <th></th>
+                            <th>F:{matchDetail.mediaTiriPortaCasaFatti.quotaPerc} S:{matchDetail.mediaTiriPortaCasaSubiti.quotaPerc}</th>
+                            <th>Tiri in porta {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
+                               infoMatch.statistics_home.statistics[0].value + " - "  +infoMatch.statistics_away.statistics[0].value:""}</th>
+                            <th>F:{matchDetail.mediaTiriPortaFuoriFatti.quotaPerc} S:{matchDetail.mediaTiriPortaFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -258,9 +258,10 @@ export default function MatchDetail(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Corner</th>
-                            <th></th>
+                            <th>F:{matchDetail.mediaAngoliCasaFavore.quotaPerc} S:{matchDetail.mediaAngoliCasaContro.quotaPerc}</th>
+                            <th>Corner  {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
+                               infoMatch.statistics_home.statistics[7].value + " - "  +infoMatch.statistics_away.statistics[7].value:""}</th>
+                            <th>F:{matchDetail.mediaAngoliFuoriFavore.quotaPerc} S:{matchDetail.mediaAngoliFuoriContro.quotaPerc}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -278,9 +279,10 @@ export default function MatchDetail(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Falli</th>
-                            <th></th>
+                            <th>F:{matchDetail.mediaFalliCasaFatti.quotaPerc} S:{matchDetail.mediaFalliCasaSubiti.quotaPerc}</th>
+                            <th>Falli {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
+                               infoMatch.statistics_home.statistics[6].value + " - "  +infoMatch.statistics_away.statistics[6].value:""}</th>
+                            <th>F:{matchDetail.mediaFalliFuoriFatti.quotaPerc} S:{matchDetail.mediaFalliFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -298,9 +300,10 @@ export default function MatchDetail(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Fuorigioco</th>
-                            <th></th>
+                            <th>F:{matchDetail.mediaFuorigiocoCasaFatti.quotaPerc} S:{matchDetail.mediaFuorigiocoCasaSubiti.quotaPerc}</th>
+                            <th>Fuorigioco {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
+                               infoMatch.statistics_home.statistics[8].value + " - "  +infoMatch.statistics_away.statistics[8].value:""}</th>
+                            <th>F:{matchDetail.mediaFuorigiocoFuoriFatti.quotaPerc} S:{matchDetail.mediaFuorigiocoFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -318,9 +321,10 @@ export default function MatchDetail(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Cartellini</th>
-                            <th></th>
+                        <th>F:{matchDetail.mediaCartelliniCasaFatti.quotaPerc} S:{matchDetail.mediaCartelliniCasaSubiti.quotaPerc}</th>
+                            <th>Cartellini (Y/R) {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
+                               infoMatch.statistics_home.statistics[10].value+"/"+ infoMatch.statistics_home.statistics[11].value + " - "  +infoMatch.statistics_away.statistics[10].value+"/"+infoMatch.statistics_away.statistics[11].value:""}</th>
+                            <th>F:{matchDetail.mediaCartelliniFuoriFatti.quotaPerc} S:{matchDetail.mediaCartelliniFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
                     <tbody>

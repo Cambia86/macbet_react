@@ -19,7 +19,9 @@ export default function ChampionshpBoardItem(props) {
                     matchDay: props.currentMatchDay,
                     homeTeam: props.homeTeam,
                     awayTeam: props.awayTeam,
-                    score: props.score
+                    score: props.score,
+                    statistics_home:props.homeTeamStats,
+                    statistics_away:props.awayTeamStats,
                 }
             });
     }
