@@ -7,7 +7,7 @@ import Championship from './championship';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ChampionshpBoardItem from './championshopBoardItem';
 import { useNavigate } from 'react-router-dom'
-
+import { TailSpin } from "react-loader-spinner";
 
 export default function ChampionshipBoard(props) {
     //  let currentMatchDay =1;
@@ -17,6 +17,7 @@ export default function ChampionshipBoard(props) {
     const [currentChampioshipSelected, setCurrentChampioshipSelected] = useState([]);
     const [champBoard, setChampionshipBoard] = useState([]);
     const [selectedOption, setSelectedOption] = useState('135');
+    const [loading, setLoading] = useState(false);
 
     const [championshipList, setChampionshipList] = useState([]);
     const navigate = useNavigate();
@@ -51,10 +52,10 @@ export default function ChampionshipBoard(props) {
         if (cw && cw.length > 0) {
             let _currentRealMatchDay;
             if (currentChampioshipSelected == 2) {
-                _currentRealMatchDay= _currentMatchDay
+                _currentRealMatchDay = _currentMatchDay
             } else {
                 _currentRealMatchDay = parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length));
-            } 
+            }
             setRealCUrrentMatchday(_currentRealMatchDay)
             saveToLocalStorage('currentMatchDay', _currentRealMatchDay)
         }
@@ -84,9 +85,9 @@ export default function ChampionshipBoard(props) {
         } else {
             // cw = champBoard.slice(10 * currentRealMatchDay, 10 * currentRealMatchDay + 10)
             if (currentChampioshipSelected == 2) {
-                start=currentMatchDay*10;
-                end=(currentMatchDay*10)- 10;
-                cw = champBoard.slice( end,start)
+                start = currentMatchDay * 10;
+                end = (currentMatchDay * 10) - 10;
+                cw = champBoard.slice(end, start)
             }
             else {
                 cw = champBoard.filter(d => d.league.round.substring(d.league.round.length - 2, d.league.round.length) == _currentRealMatchDay
@@ -110,8 +111,8 @@ export default function ChampionshipBoard(props) {
             cw = champBoard.slice(0, 10)
         } else {
             if (currentChampioshipSelected == 2) {
-                start=currentMatchDay*10;
-                end=(currentMatchDay*10)+ 10
+                start = currentMatchDay * 10;
+                end = (currentMatchDay * 10) + 10
                 cw = champBoard.slice(start, end)
             }
             else {
@@ -129,22 +130,24 @@ export default function ChampionshipBoard(props) {
 
     const getChampionshipById = (id) => {
         setCurrentChampioshipSelected(id);
+        setLoading(true);
         FixtureAPI.get(id, true).then((myjson) => {
+            setLoading(false);
             let cw;
-            let currMatchDay=0;
-            if(currentRealMatchDay!=null){
-                let from =10*(currentRealMatchDay-1)
-                let to =from+10
+            let currMatchDay = 0;
+            if (currentRealMatchDay != null) {
+                let from = 10 * (currentRealMatchDay - 1)
+                let to = from + 10
                 cw = myjson.result.slice(from, to)
-            }else{
+            } else {
                 cw = myjson.result.slice(0, 10)
                 currMatchDay = parseInt(cw[0].league.round.substring(cw[0].league.round.length - 2, cw[0].league.round.length))
                 setRealCUrrentMatchday(currMatchDay)
             }
-            
+
             setChampionshipBoard(myjson.result);
-            
-            
+
+
             setCurrentview(cw);
             window.localStorage.setItem('currentCahmpionshipMatches', JSON.stringify(myjson.result));
         })
@@ -178,73 +181,80 @@ export default function ChampionshipBoard(props) {
         getChampionshipById(value)
     }
 
-    const downloadResults=(value)=>{
-        let _cwids=currentview.map(d=>{return {"id":d.fixture.id}})
+    const downloadResults = (value) => {
+        setLoading(true);
+        let _cwids = currentview.map(d => { return { "id": d.fixture.id } })
 
-        FixtureAPI.downloadResults(selectedOption,_cwids, true).then((myjson) => {
+        FixtureAPI.downloadResults(selectedOption, _cwids, true).then((myjson) => {
+            setLoading(false);
             getChampionshipById(currentChampioshipSelected)
         })
     }
 
-    const refreshData=()=>{
+    const refreshData = () => {
         getChampionshipById(currentChampioshipSelected)
     }
 
     return (
+
         <div className="">
-            <Container>
-                <Row>
-                    <Column xs>
-                        <button class="buttonNavigation" onClick={() => navigaHome()} >home</button>
-                        <button class="buttonNavigation" onClick={() => navigaPrevision()} >previsioni</button>
-                    </Column>
-                </Row>
+            {loading ? (
+                <TailSpin color="red" radius={"8px"} />
+            ) : <div>
+                <Container>
+                    <Row>
+                        <Column xs>
+                            <button class="buttonNavigation" onClick={() => navigaHome()} >home</button>
+                            <button class="buttonNavigation" onClick={() => navigaPrevision()} >previsioni</button>
+                        </Column>
+                    </Row>
 
-                      <Row>
-                    <Column>
-                        {championshipList && championshipList.length > 0 &&
-                            <select
-                                value={selectedOption}
-                                onChange={e => handleChange(e.target.value, setSelectedOption)}>
-                                {championshipList.map(o => (
-                                    <option key={o.id} value={o.id}>{o.name}</option>
-                                ))}
-                            </select>
-                        }
-                    </Column>
-                    <Column xs>
-                    <button  class="buttonNavigation" 
-                         onClick={() => downloadResults()}>download</button> 
-                    </Column>
-                </Row>
-            </Container>
-            <Container>
-                <Row>
-                    <Column>    <button class="buttonNavigation"
-                        onClick={() => back()}
-                    >back</button></Column>
-                    <Column>  <div>{currentRealMatchDay}</div>  </Column>
-                    <Column>   <button class="buttonNavigation"
-                        onClick={() => forward()}
-                    >forward</button></Column>
-                </Row>
-            </Container>
+                    <Row>
+                        <Column>
+                            {championshipList && championshipList.length > 0 &&
+                                <select
+                                    value={selectedOption}
+                                    onChange={e => handleChange(e.target.value, setSelectedOption)}>
+                                    {championshipList.map(o => (
+                                        <option key={o.id} value={o.id}>{o.name}</option>
+                                    ))}
+                                </select>
+                            }
+                        </Column>
+                        <Column xs>
+                            <button class="buttonNavigation"
+                                onClick={() => downloadResults()}>download</button>
+                        </Column>
+                    </Row>
+                </Container>
+                <Container>
+                    <Row>
+                        <Column>    <button class="buttonNavigation"
+                            onClick={() => back()}
+                        >back</button></Column>
+                        <Column>  <div>{currentRealMatchDay}</div>  </Column>
+                        <Column>   <button class="buttonNavigation"
+                            onClick={() => forward()}
+                        >forward</button></Column>
+                    </Row>
+                </Container>
 
-            <p className="post-body">{currentview.map((c) => {
-                return <ChampionshpBoardItem
-                    homeTeam={c.teams.home}
-                    awayTeam={c.teams.away}
-                    score={c.score}
-                    fixture={c.fixture}
-                    league={c.league}
-                    currentMatchDay={currentRealMatchDay}
-                    homeTeamStats={c.statistics_home}
-                    awayTeamStats={c.statistics_away}
-                    refreshData={refreshData}
-                // navigateDetail={navigateDetail}
-                />
+                <p className="post-body">{currentview.map((c) => {
+                    return <ChampionshpBoardItem
+                        homeTeam={c.teams.home}
+                        awayTeam={c.teams.away}
+                        score={c.score}
+                        fixture={c.fixture}
+                        league={c.league}
+                        currentMatchDay={currentRealMatchDay}
+                        homeTeamStats={c.statistics_home}
+                        awayTeamStats={c.statistics_away}
+                        refreshData={refreshData}
+                    // navigateDetail={navigateDetail}
+                    />
 
-            })}</p>
+                })}</p>
+            </div>}
         </div>
     )
 }
