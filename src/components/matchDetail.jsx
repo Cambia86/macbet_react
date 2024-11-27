@@ -6,6 +6,7 @@ import Column from 'react-bootstrap/Col';
 import { useLocation } from 'react-router-dom';
 import { FixtureAPI } from "../service/fixtureService"
 import Table from 'react-bootstrap/Table';
+import { TailSpin } from "react-loader-spinner";
 
 export default function MatchDetail(props) {
     const { state } = useLocation();
@@ -13,8 +14,14 @@ export default function MatchDetail(props) {
     const [homeTeamStats, setHomeTeamStats] = useState({});
     const [awayTeamStats, setAwayTeamStats] = useState({});
     const [infoMatch, setInfoMatch] = useState({});
+    const [selectedLineType, setSelectedLineType] = useState("corner");
+    const [selectedUO, setSelectedUO] = useState("under");
+    const [value, setValue] = useState("");
+    const [requestLineValue, setRequestLineValue] = useState("");
     let showDetail = false;
     const [showPage, setShowPage] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         setShowPage(false);
         setMatchDetail({})
@@ -30,8 +37,8 @@ export default function MatchDetail(props) {
             homeTeam: state.homeTeam,
             awayTeam: state.awayTeam,
             score: state.score,
-            statistics_home:state.statistics_home,
-            statistics_away:state.statistics_away
+            statistics_home: state.statistics_home,
+            statistics_away: state.statistics_away
         })
         // if(state.previsionjson){
         //     setMatchDetail(state.previsionjson);
@@ -61,16 +68,45 @@ export default function MatchDetail(props) {
         if (valInt < 75 && valInt >= 60)
             return "darkgreen";
         if (valInt < 60 && valInt >= 45)
-            return "yellow";
+            return "gold";
         if (valInt < 45 && valInt >= 30)
             return "orange";
         if (valInt < 30 && valInt >= 15)
-            return "red";
-        if (valInt < 15)
             return "darkred";
+        if (valInt < 15)
+            return "red";
     };
 
+    const handleChangeRadioUO = (event) => {
+        setSelectedUO(event.target.value);
+    };
+
+    const handleChangeRadioType = (event) => {
+        setSelectedLineType(event.target.value);
+    };
+
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
+
+    const handleRequestLinea = (event) => {
+     setLoading(true);
+        FixtureAPI.getlinea(infoMatch.matchDay, infoMatch.championshipId, infoMatch.homeTeam, infoMatch.awayTeam,
+            selectedLineType, selectedUO, value, false
+        ).then((data) => {
+            setLoading(false);
+            setRequestLineValue(data.result)
+        }).finally(()=>{
+            setLoading(false);
+        })
+    }
+
     return (
+        <div>
+              {loading ? (
+                <TailSpin color="red" radius={"8px"} />
+            ) :
+       
         <Container >
             {showPage &&
                 <Row >
@@ -217,8 +253,8 @@ export default function MatchDetail(props) {
                     <thead>
                         <tr>
                             <th>F:{matchDetail.mediaTiriTotaliCasaFatti.quotaPerc} S:{matchDetail.mediaTiriTotaliCasaSubiti.quotaPerc}</th>
-                            <th>Tiri Totali {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
-                               infoMatch.statistics_home.statistics[2].value + " - "  +infoMatch.statistics_away.statistics[2].value:""} </th>
+                            <th>Tiri Totali {infoMatch.statistics_home != null && infoMatch.statistics_home.statistics != null && infoMatch.statistics_home.statistics ?
+                                infoMatch.statistics_home.statistics[2].value + " - " + infoMatch.statistics_away.statistics[2].value : ""} </th>
                             <th>F:{matchDetail.mediaTiriTotaliFuoriFatti.quotaPerc} S:{matchDetail.mediaTiriTotaliFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
@@ -238,8 +274,8 @@ export default function MatchDetail(props) {
                     <thead>
                         <tr>
                             <th>F:{matchDetail.mediaTiriPortaCasaFatti.quotaPerc} S:{matchDetail.mediaTiriPortaCasaSubiti.quotaPerc}</th>
-                            <th>Tiri in porta {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
-                               infoMatch.statistics_home.statistics[0].value + " - "  +infoMatch.statistics_away.statistics[0].value:""}</th>
+                            <th>Tiri in porta {infoMatch.statistics_home != null && infoMatch.statistics_home.statistics != null && infoMatch.statistics_home.statistics ?
+                                infoMatch.statistics_home.statistics[0].value + " - " + infoMatch.statistics_away.statistics[0].value : ""}</th>
                             <th>F:{matchDetail.mediaTiriPortaFuoriFatti.quotaPerc} S:{matchDetail.mediaTiriPortaFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
@@ -259,8 +295,8 @@ export default function MatchDetail(props) {
                     <thead>
                         <tr>
                             <th>F:{matchDetail.mediaAngoliCasaFavore.quotaPerc} S:{matchDetail.mediaAngoliCasaContro.quotaPerc}</th>
-                            <th>Corner  {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
-                               infoMatch.statistics_home.statistics[7].value + " - "  +infoMatch.statistics_away.statistics[7].value:""}</th>
+                            <th>Corner  {infoMatch.statistics_home != null && infoMatch.statistics_home.statistics != null && infoMatch.statistics_home.statistics ?
+                                infoMatch.statistics_home.statistics[7].value + " - " + infoMatch.statistics_away.statistics[7].value : ""}</th>
                             <th>F:{matchDetail.mediaAngoliFuoriFavore.quotaPerc} S:{matchDetail.mediaAngoliFuoriContro.quotaPerc}</th>
                         </tr>
                     </thead>
@@ -280,8 +316,8 @@ export default function MatchDetail(props) {
                     <thead>
                         <tr>
                             <th>F:{matchDetail.mediaFalliCasaFatti.quotaPerc} S:{matchDetail.mediaFalliCasaSubiti.quotaPerc}</th>
-                            <th>Falli {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
-                               infoMatch.statistics_home.statistics[6].value + " - "  +infoMatch.statistics_away.statistics[6].value:""}</th>
+                            <th>Falli {infoMatch.statistics_home != null && infoMatch.statistics_home.statistics != null && infoMatch.statistics_home.statistics ?
+                                infoMatch.statistics_home.statistics[6].value + " - " + infoMatch.statistics_away.statistics[6].value : ""}</th>
                             <th>F:{matchDetail.mediaFalliFuoriFatti.quotaPerc} S:{matchDetail.mediaFalliFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
@@ -301,8 +337,8 @@ export default function MatchDetail(props) {
                     <thead>
                         <tr>
                             <th>F:{matchDetail.mediaFuorigiocoCasaFatti.quotaPerc} S:{matchDetail.mediaFuorigiocoCasaSubiti.quotaPerc}</th>
-                            <th>Fuorigioco {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
-                               infoMatch.statistics_home.statistics[8].value + " - "  +infoMatch.statistics_away.statistics[8].value:""}</th>
+                            <th>Fuorigioco {infoMatch.statistics_home != null && infoMatch.statistics_home.statistics != null && infoMatch.statistics_home.statistics ?
+                                infoMatch.statistics_home.statistics[8].value + " - " + infoMatch.statistics_away.statistics[8].value : ""}</th>
                             <th>F:{matchDetail.mediaFuorigiocoFuoriFatti.quotaPerc} S:{matchDetail.mediaFuorigiocoFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
@@ -321,9 +357,9 @@ export default function MatchDetail(props) {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                        <th>F:{matchDetail.mediaCartelliniCasaFatti.quotaPerc} S:{matchDetail.mediaCartelliniCasaSubiti.quotaPerc}</th>
-                            <th>Cartellini (Y/R) {infoMatch.statistics_home !=null && infoMatch.statistics_home.statistics!=null && infoMatch.statistics_home.statistics ?
-                               infoMatch.statistics_home.statistics[10].value+"/"+ infoMatch.statistics_home.statistics[11].value + " - "  +infoMatch.statistics_away.statistics[10].value+"/"+infoMatch.statistics_away.statistics[11].value:""}</th>
+                            <th>F:{matchDetail.mediaCartelliniCasaFatti.quotaPerc} S:{matchDetail.mediaCartelliniCasaSubiti.quotaPerc}</th>
+                            <th>Cartellini (Y/R) {infoMatch.statistics_home != null && infoMatch.statistics_home.statistics != null && infoMatch.statistics_home.statistics ?
+                                infoMatch.statistics_home.statistics[10].value + "/" + infoMatch.statistics_home.statistics[11].value + " - " + infoMatch.statistics_away.statistics[10].value + "/" + infoMatch.statistics_away.statistics[11].value : ""}</th>
                             <th>F:{matchDetail.mediaCartelliniFuoriFatti.quotaPerc} S:{matchDetail.mediaCartelliniFuoriSubiti.quotaPerc}</th>
                         </tr>
                     </thead>
@@ -337,7 +373,96 @@ export default function MatchDetail(props) {
                 </Table>
             }
 
-        </Container>
+            {showPage &&
+                <div>
+                    <Row>
+                        <Column>  <h3>Richiedi una linea:</h3></Column>
+                    </Row>
+                    <Row>
+                        <Column>  <label className="textcenter">
+                            <input
+                                type="radio"
+                                value="corner"
+                                checked={selectedLineType === "corner"}
+                                onChange={handleChangeRadioType}
+                            />
+                            corner
+                        </label></Column>
+                        <Column>
+                            <label className="textcenter">
+                                <input
+                                    type="radio"
+                                    value="tiritotali"
+                                    checked={selectedLineType === "tiritotali"}
+                                    onChange={handleChangeRadioType}
+                                />
+                                Tiri Totali
+                            </label></Column>
+                        <Column>
+                            <label className="textcenter">
+                                <input
+                                    type="radio"
+                                    value="tiriporta"
+                                    checked={selectedLineType === "tiriporta"}
+                                    onChange={handleChangeRadioType}
+                                />
+                                Tiri Porta
+                            </label></Column>
+                    </Row>
+                </div>
+            }
 
+            {showPage &&
+                <div>
+                    <Row>
+                        <Column>  <label className="textcenter">
+                            <input
+                                type="radio"
+                                value="under"
+                                checked={selectedUO === "under"}
+                                onChange={handleChangeRadioUO}
+                            />
+                            under
+                        </label></Column>
+                        <Column>
+                            <label className="textcenter">
+                                <input
+                                    type="radio"
+                                    value="over"
+                                    checked={selectedUO === "over"}
+                                    onChange={handleChangeRadioUO}
+                                />
+                                over
+                            </label></Column>
+
+                    </Row>
+                </div>
+            }
+            {showPage &&
+                <div>
+                    <Row>
+                        <Column>
+                            <input
+                                type="number"
+                                value={value}
+                                onChange={handleChange}
+                                placeholder="Enter a number"
+                            />
+                        </Column>
+                        <Column>
+                            <input type="button" value="submit" onClick={handleRequestLinea} />
+                        </Column>
+
+                    </Row>
+                </div>
+            }
+            {showPage && requestLineValue != "" &&
+                <div>
+                    <label>{requestLineValue.quotaPerc}%</label>
+                </div>}
+            {/* RequestLineValue */}
+
+        </Container>}
+ </div>
     )
 }

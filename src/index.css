@@ -203,3 +203,7 @@ textarea {
     margin: 0px;
     padding: 0px;
 }
+
+.textcenter{
+    text-align: center;
+}

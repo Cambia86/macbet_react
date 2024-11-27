@@ -88,6 +88,18 @@ export const FixtureAPI = {
 
     // returning the product returned by the API
     return response.data
+  },
+
+  getlinea: async function(matchDay,championshipId,homeTeam,awayTeam,lineType,underover,value, cancel = false) {
+    const response = await api.request({
+      url: `/fixtures/picchetto/${championshipId}/${matchDay}/${homeTeam.id}/${awayTeam.id}/linea?uo=${underover}&value=${value}&lineType=${lineType}`,
+      method: "GET",
+      // retrieving the signal value by using the property name
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    // returning the product returned by the API
+    return response.data
   }
 }
 
