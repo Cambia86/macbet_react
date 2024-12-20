@@ -18,6 +18,7 @@ import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import './index.css';
 import MatchDetail from './components/matchDetail';
+import Tabs from './components/tabs';
 
 
 
@@ -108,7 +109,9 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<ChampionshipBoard />} />
-                        <Route path="previsionList" element={<PrevisionList />} />
+                        {/* <Route path="previsionList" element={<PrevisionList />} /> */}
+                        <Route path="previsionList" element={<Tabs />} /> 
+                        
                         <Route path="contact" element={<Contact />} />
                         <Route path="details" element={<MatchDetail />} />
                         <Route path="*" element={<NoPage />} />

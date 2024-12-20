@@ -10,8 +10,8 @@ export default function PrevisionList(props) {
     const [prevList, setprevList] = useState([]);
     const [picchettoItems, setpicchettoItems] = useState([]);
     const [selectedOption, setSelectedOption] = useState([]);
-   
 
+   
     const getPrevisionList = () => {
         FixtureAPI.getPrevisionList().then((prevJson) => {
             let prevreverse = prevJson.result.reverse();
@@ -28,7 +28,7 @@ export default function PrevisionList(props) {
         } else {
             getPrevisionList();
         }
-        if(_currentPicchettoItem){
+        if (_currentPicchettoItem) {
             setpicchettoItems(_currentPicchettoItem);
         }
     }, [])
@@ -60,7 +60,7 @@ export default function PrevisionList(props) {
     }
 
 
-   
+
 
     return (
         <div className="">
@@ -79,7 +79,6 @@ export default function PrevisionList(props) {
                     </Column>
                 </Row>
                 <Row>
-                
                     <Column xs={12} md={8}>
                         {picchettoItems && picchettoItems.result && picchettoItems.result.length > 0 && picchettoItems.result.map((pi, i) => {
                             return <PrevisionItemContent key={i} picchettoItem={pi}></PrevisionItemContent>
