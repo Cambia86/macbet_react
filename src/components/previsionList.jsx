@@ -81,7 +81,7 @@ export default function PrevisionList(props) {
                 <Row>
                     <Column xs={12} md={8}>
                         {picchettoItems && picchettoItems.result && picchettoItems.result.length > 0 && picchettoItems.result.map((pi, i) => {
-                            return <PrevisionItemContent key={i} picchettoItem={pi}></PrevisionItemContent>
+                            return <PrevisionItemContent key={i} picchettoItem={pi} currentPrevName={selectedOption}></PrevisionItemContent>
                         })}
                     </Column>
                 </Row>

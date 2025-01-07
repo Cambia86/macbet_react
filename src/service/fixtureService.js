@@ -112,6 +112,18 @@ export const FixtureAPI = {
 
     // returning the product returned by the API
     return response.data
+  },
+
+  updatePrevision: async function(prevId,championshipId,fixtureId, cancel = false) {
+    const response = await api.request({
+      url: `/prevision/addresult/${prevId}/${championshipId}/${fixtureId}`,
+      method: "GET",
+      // retrieving the signal value by using the property name
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    // returning the product returned by the API
+    return response.data
   }
 }
 
