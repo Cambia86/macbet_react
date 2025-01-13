@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import PrevisionList from  './previsionList';
 import MultiplaStatistica from './multiplaStatistica'
+import CreaPrevisione from './creaPrevisione'
 
 function Tabs() {
   const [activeTab, setActiveTab] = useState(0); // Stato per tracciare il tab attivo
 
   // Contenuti per ogni tab
   const tabContent = [
-    { title: "Tab 1", content:  <PrevisionList />},
-    { title: "Tab 2", content: <MultiplaStatistica />},
+    { title: "Prevision List", content:  <PrevisionList />},
+    { title: "Mult. Statistiche", content: <MultiplaStatistica />},
+    { title: "Crea Previsione", content: <CreaPrevisione />},
   ];
 
   return (

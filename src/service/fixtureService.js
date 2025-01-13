@@ -124,7 +124,47 @@ export const FixtureAPI = {
 
     // returning the product returned by the API
     return response.data
+  },
+
+  getPicchetto: async function(championshipId,date, cancel = false) {
+    const response = await api.request({
+      url: `/fixtures/picchetto/${championshipId}/${date}`,
+      method: "GET",
+      // retrieving the signal value by using the property name
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    // returning the product returned by the API
+    return response.data
+  },
+
+  getHistoryResult: async function(cancel = false) {
+    const response = await api.request({
+      url: `/prevision/historyresult`,
+      method: "GET",
+      // retrieving the signal value by using the property name
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    // returning the product returned by the API
+    return response.data
+  },
+
+  savePrevisionDayInDate: async function(name,matches,cancel = false) {
+    const response = await api.request({
+      url: `/fixtures/picchetto/save/${name}`,
+      headers : {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+      method: "POST",
+       data: {"data": JSON.stringify( matches)},
+      signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
+    })
+
+    // returning the product returned by the API
+    return response.data
   }
+  // fixtures//picchetto/save/:name
 }
 
 // defining the cancel API object for ProductAPI
