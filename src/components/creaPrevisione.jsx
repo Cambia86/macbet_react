@@ -35,6 +35,16 @@ export default function CreaPrevisione(props) {
                     if (item.prev4 == null) {
                         item.prev4 = type;
                         item.prev4quotaPerc = quotaperc;
+                    } else {
+                        if (item.prev5 == null) {
+                            item.prev5 = type;
+                            item.prev5quotaPerc = quotaperc;
+                        } else {
+                            if (item.prev6 == null) {
+                                item.prev6 = type;
+                                item.prev6quotaPerc = quotaperc;
+                            }
+                        }
                     }
                 }
             }
@@ -289,6 +299,53 @@ export default function CreaPrevisione(props) {
                                             item.prevision.ov05CasaANDun25Fuori.quotaPerc);
                                     }
 
+                                    // win home corner
+                                    if (item.prevision.winHomeCorner.quotaPerc >= 70) {
+                                        addprevisiontoitem(item, "WIN_HOME_CORNER",
+                                            item.prevision.winHomeCorner.quotaPerc);
+                                    }
+
+                                    // win away corner
+                                    if (item.prevision.winAwayCorner.quotaPerc >= 70) {
+                                        addprevisiontoitem(item, "WIN_AWAY_CORNER",
+                                            item.prevision.winAwayCorner.quotaPerc);
+                                    }
+
+                                     // win home falli
+                                     if (item.prevision.winHomeFalli.quotaPerc >= 70) {
+                                        addprevisiontoitem(item, "WIN_HOME_FALLI",
+                                            item.prevision.winHomeCorner.quotaPerc);
+                                    }
+
+                                    // win away falli
+                                    if (item.prevision.winAwayFalli.quotaPerc >= 70) {
+                                        addprevisiontoitem(item, "WIN_AWAY_FALLI",
+                                            item.prevision.winAwayCorner.quotaPerc);
+                                    }
+
+                                     // win home Tiri porta
+                                     if (item.prevision.winHomeTiriPorta.quotaPerc > (item.prevision.winAwayTiriPorta.quotaPerc*2)) {
+                                        addprevisiontoitem(item, "WIN_HOME_TIRI_PORTA",
+                                            item.prevision.winHomeTiriPorta.quotaPerc);
+                                    }
+
+                                     // win away Tiri porta
+                                     if ((item.prevision.winHomeTiriPorta.quotaPerc*2) < (item.prevision.winAwayTiriPorta.quotaPerc)) {
+                                        addprevisiontoitem(item, "WIN_AWAY_TIRI_PORTA",
+                                            item.prevision.winAwayTiriPorta.quotaPerc);
+                                    }
+
+                                     // win home Tiri totali
+                                     if (item.prevision.winHomeTiriTotali.quotaPerc > (item.prevision.winAwayTiriTotali.quotaPerc*2)) {
+                                        addprevisiontoitem(item, "WIN_HOME_TIRI_TOTALI",
+                                            item.prevision.winHomeTiriTotali.quotaPerc);
+                                    }
+
+                                     // win away Tiri totali
+                                     if ((item.prevision.winHomeTiriTotali.quotaPerc*2) < (item.prevision.winAwayTiriTotali.quotaPerc)) {
+                                        addprevisiontoitem(item, "WIN_AWAY_TIRI_TOTALI",
+                                            item.prevision.winAwayTiriTotali.quotaPerc);
+                                    }
                                     // AddHistoryPrevision
                                     return item
                                 })
@@ -413,6 +470,65 @@ export default function CreaPrevisione(props) {
                                                     .reduce((value, element) => value + element)
                                                 : 0;
                                     }
+                                    if (prev.prev5 != null) {
+                                        let res = getPercentageSuccessBychampionshipandprevision(
+                                            prev.prev5, prev.fixture.league.name, hist.result);
+                                        prev.prev5historyprob = res.percentage != undefined ? res.percentage : 0;
+                                        prev.success5Home =
+                                            (res.successTeams != null && res.successTeams.length > 0)
+                                                ? res.successTeams
+                                                    .map((element) => element.id == hometeamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                        prev.success5Away =
+                                            (res.successTeams != null && res.successTeams.length > 0)
+                                                ? res.successTeams
+                                                    .map((element) => element.id == awayteamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                        prev.fail5Home =
+                                            (res.failureTeams != null && res.failureTeams.length > 0)
+                                                ? res.failureTeams
+                                                    .map((element) => element.id == hometeamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                        prev.fail5Away =
+                                            (res.failureTeams != null && res.failureTeams.length > 0)
+                                                ? res.failureTeams
+                                                    .map((element) => element.id == awayteamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                    }
+
+                                    if (prev.prev6 != null) {
+                                        let res = getPercentageSuccessBychampionshipandprevision(
+                                            prev.prev6, prev.fixture.league.name, hist.result);
+                                        prev.prev5historyprob = res.percentage != undefined ? res.percentage : 0;
+                                        prev.success6Home =
+                                            (res.successTeams != null && res.successTeams.length > 0)
+                                                ? res.successTeams
+                                                    .map((element) => element.id == hometeamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                        prev.success6Away =
+                                            (res.successTeams != null && res.successTeams.length > 0)
+                                                ? res.successTeams
+                                                    .map((element) => element.id == awayteamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                        prev.fail6Home =
+                                            (res.failureTeams != null && res.failureTeams.length > 0)
+                                                ? res.failureTeams
+                                                    .map((element) => element.id == hometeamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                        prev.fail6Away =
+                                            (res.failureTeams != null && res.failureTeams.length > 0)
+                                                ? res.failureTeams
+                                                    .map((element) => element.id == awayteamid ? 1 : 0)
+                                                    .reduce((value, element) => value + element)
+                                                : 0;
+                                    }
 
                                     let retobj = {
                                         "match": prev.fixture,
@@ -445,6 +561,23 @@ export default function CreaPrevisione(props) {
                                         "fail4Home": prev.fail4Home,
                                         "success4Away": prev.success4Away,
                                         "fail4Away": prev.fail4Away,
+
+                                        "prev5": prev.prev5,
+                                        "prev5quotaPerc": prev.prev5quotaPerc,
+                                        "prev5historyprob": prev.prev5historyprob,
+                                        "success5Home": prev.success5Home,
+                                        "fail5Home": prev.fail5Home,
+                                        "success5Away": prev.success5Away,
+                                        "fail5Away": prev.fail5Away,
+
+                                        "prev6": prev.prev6,
+                                        "prev6quotaPerc": prev.prev6quotaPerc,
+                                        "prev6historyprob": prev.prev6historyprob,
+                                        "success6Home": prev.success6Home,
+                                        "fail6Home": prev.fail6Home,
+                                        "success6Away": prev.success6Away,
+                                        "fail6Away": prev.fail6Away,
+                                        
 
                                     }
                                     return retobj;
@@ -569,13 +702,45 @@ export default function CreaPrevisione(props) {
                                 <Row>
                                     <Column>
                                         <Row>
-                                            <Column>{pi.prev4}: {pi.prev4quotaPerc}% Hist {pi.prev3historyprob != null ? pi.prev3historyprob.toFixed(2) : 0}%"</Column>
+                                            <Column>{pi.prev4}: {pi.prev4quotaPerc}% Hist {pi.prev4historyprob != null ? pi.prev4historyprob.toFixed(2) : 0}%"</Column>
                                         </Row>
                                     </Column>
                                     <Column>
                                         <Row>
                                             <Column>H suc: {pi.success4Home} H fail: {pi.fail4Home} </Column>
                                             <Column>H suc: {pi.success4Away} H fail: {pi.fail4Away} </Column>
+                                        </Row>
+                                    </Column>
+                                </Row>
+                            }
+
+                            {pi.prev5 != undefined && pi.prev5 != "" &&
+                                <Row>
+                                    <Column>
+                                        <Row>
+                                            <Column>{pi.prev5}: {pi.prev5quotaPerc}% Hist {pi.prev5historyprob != null ? pi.prev5historyprob.toFixed(2) : 0}%"</Column>
+                                        </Row>
+                                    </Column>
+                                    <Column>
+                                        <Row>
+                                            <Column>H suc: {pi.success5Home} H fail: {pi.fail5Home} </Column>
+                                            <Column>H suc: {pi.success5Away} H fail: {pi.fail5Away} </Column>
+                                        </Row>
+                                    </Column>
+                                </Row>
+                            } 
+                            
+                            {pi.prev6 != undefined && pi.prev6 != "" &&
+                                <Row>
+                                    <Column>
+                                        <Row>
+                                            <Column>{pi.prev6}: {pi.prev6quotaPerc}% Hist {pi.prev6historyprob != null ? pi.prev6historyprob.toFixed(2) : 0}%"</Column>
+                                        </Row>
+                                    </Column>
+                                    <Column>
+                                        <Row>
+                                            <Column>H suc: {pi.success6Home} H fail: {pi.fail6Home} </Column>
+                                            <Column>H suc: {pi.success6Away} H fail: {pi.fail6Away} </Column>
                                         </Row>
                                     </Column>
                                 </Row>

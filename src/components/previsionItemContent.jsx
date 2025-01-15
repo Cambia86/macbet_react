@@ -118,7 +118,7 @@ export default function PrevisionItemContent(props) {
                 </Column>
             </Row>
 
-            {props.picchettoItem != "" && props.picchettoItem.prev1 != "" &&
+            {props.picchettoItem != "" && props.picchettoItem.prev1 != undefined && props.picchettoItem.prev1 != "" &&
                 <Row>
                     <Column>{props.picchettoItem.prev1}</Column>
                     <Column>%{props.picchettoItem.prev1quotaPerc}</Column>
@@ -131,7 +131,7 @@ export default function PrevisionItemContent(props) {
                     </Column>
                 </Row>
             }
-            {props.picchettoItem != "" && props.picchettoItem.prev2 != "" &&
+            {props.picchettoItem != "" && props.picchettoItem.prev2 != undefined&& props.picchettoItem.prev2 != "" &&
                 <Row>
                     <Column>{props.picchettoItem.prev2}</Column>
                     <Column>%{props.picchettoItem.prev2quotaPerc}</Column>
@@ -144,7 +144,7 @@ export default function PrevisionItemContent(props) {
                     </Column>
                 </Row>
             }
-            {props.picchettoItem != "" && props.picchettoItem.prev3 != "" &&
+            {props.picchettoItem != "" && props.picchettoItem.prev3 != undefined&& props.picchettoItem.prev3 != "" &&
                 <Row>
                     <Column>{props.picchettoItem.prev3}</Column>
                     <Column>%{props.picchettoItem.prev3quotaPerc}</Column>
@@ -157,7 +157,7 @@ export default function PrevisionItemContent(props) {
                     </Column>
                 </Row>
             }
-            {props.picchettoItem != "" && props.picchettoItem.prev4 != "" &&
+            {props.picchettoItem != "" && props.picchettoItem.prev4 != undefined && props.picchettoItem.prev4 != "" &&
                 <Row>
                     <Column>{props.picchettoItem.prev4}</Column>
                     <Column>%{props.picchettoItem.prev4quotaPerc}</Column>
@@ -171,6 +171,32 @@ export default function PrevisionItemContent(props) {
                 </Row>
             }
 
+            {props.picchettoItem != ""&& props.picchettoItem.prev5 != undefined && props.picchettoItem.prev5 != "" &&
+                <Row>
+                    <Column>{props.picchettoItem.prev5}</Column>
+                    <Column>%{props.picchettoItem.prev5quotaPerc}</Column>
+                    <Column>Hist{(props.picchettoItem.prev5historyprob != "" && props.picchettoItem.prev5historyprob >0) ? props.picchettoItem.prev5historyprob.toFixed(2) : 0}</Column>
+                    <Column>
+                        <Row>
+                            <Column>H {props.picchettoItem.success5Home}/{props.picchettoItem.fail5Home}</Column>
+                            <Column>A {props.picchettoItem.success5Away}/{props.picchettoItem.fail5Away}</Column>
+                        </Row>
+                    </Column>
+                </Row>
+            }
+            { props.picchettoItem != "" && props.picchettoItem.prev6 != undefined && props.picchettoItem.prev6 != "" &&
+                <Row>
+                    <Column>{props.picchettoItem.prev6}</Column>
+                    <Column>%{props.picchettoItem.prev6quotaPerc}</Column>
+                    <Column>Hist{(props.picchettoItem.prev6historyprob != "" && props.picchettoItem.prev6historyprob >0) ? props.picchettoItem.prev6historyprob.toFixed(2) : 0}</Column>
+                    <Column>
+                        <Row>
+                            <Column>H {props.picchettoItem.success6Home}/{props.picchettoItem.fail6Home}</Column>
+                            <Column>A {props.picchettoItem.success6Away}/{props.picchettoItem.fail6Away}</Column>
+                        </Row>
+                    </Column>
+                </Row>
+            }
 
         </Container>
     )
