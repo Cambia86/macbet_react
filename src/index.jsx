@@ -1,10 +1,10 @@
 
-import { useState, useEffect ,createContext} from 'react';
+import { useState, useEffect, createContext } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,Link  } from "react-router-dom";
 import AddPost from './components/addPost';
 import ChampionshipBoard from './components/championshipBoard';
-import PrevisionList from  './components/previsionList';
+import PrevisionList from './components/previsionList';
 import Championship from './components/championship';
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
@@ -19,11 +19,13 @@ import NoPage from "./pages/NoPage";
 import './index.css';
 import MatchDetail from './components/matchDetail';
 import Tabs from './components/tabs';
-
+import { Provider } from 'react-redux';
+import store from './store/index';
+import Journey from './components/journey';
 
 
 function App() {
-    
+
 
     const [posts, setPosts] = useState([]);
     const [team, setTeam] = useState([]);
@@ -51,109 +53,32 @@ function App() {
         fetchPosts()
     }, []);
 
-    const addPost = (title, body) => {
-        fetch('https://jsonplaceholder.typicode.com/posts', {
-            method: 'POST',
-            body: JSON.stringify({
-                title: title,
-                body: body,
-                userId: Math.random().toString(36).slice(2),
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setPosts((prevPosts) => [data, ...prevPosts])
-            })
-    };
-
-    const getChampionshipById = (id) => {
-        fetch(`https://macbet-be.glitch.me/api/fixtures/${id}`, {
-            method: 'GET',
-            headers: {
-
-                "Content-Type": "application/json",
-            },
-        })
-            .then(response => {
-                return response.json();
-            }).then(myjson => {
-                setChampionship(myjson.result);
-            })
-            .then(data => console.log(data))
-            .catch(error => console.error(error))
-
-    }
-
-    const deletePost = (id) => {
-        fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-            method: 'DELETE'
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    setPosts(
-                        posts.filter((post) => {
-                            return post.id !== id;
-                        })
-                    )
-                }
-            })
-    };
 
     return (
 
         <main>
             <BrowserRouter>
+                {/* <nav>
+                    <Link to="/">Home</Link> | <Link to="/previsionList">previsionList</Link>| <Link to="/journey">journey</Link>
+                </nav> */}
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<ChampionshipBoard />} />
                         {/* <Route path="previsionList" element={<PrevisionList />} /> */}
-                        <Route path="previsionList" element={<Tabs />} /> 
-                        
-                        <Route path="contact" element={<Contact />} />
+                        <Route path="previsionList" element={<Tabs />} />
+                        {/* <Route path="contact" element={<Contact />} /> */}
+                        <Route path="journey" element={<Journey />} />
                         <Route path="details" element={<MatchDetail />} />
                         <Route path="*" element={<NoPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
-            {/* <h1>Consuming REST api tutorial</h1> */}
-            {/* <Container>
-                <Row>
-                    {championshipList.map((champ) =>
-                        <Column xs>
-                            <Championship id={champ.id} name={champ.name} getChampionshipById={getChampionshipById} />
-                        </Column>
-                    )}
-                </Row>
-            </Container> */}
-{/* 
-            {
-                (champ && champ != null && champ.length > 0)
-                    ? <ChampionshipBoard data={champ} />
-                    : <p>Loading...</p>
-            } */}
-
-
-            {/* <AddPost addPost={addPost} />
-            <section className="posts-container">
-                <h2>Posts</h2>
-                {posts.map((post) =>
-                    <Post
-                        key={post.id}
-                        id={post.id}
-                        title={post.title}
-                        body={post.body}
-                        deletePost={deletePost}
-                    />
-                )}
-            </section> */}
         </main>
     )
 }
 
 // ReactDOM.createRoot(document.getElementById('root')).render(<App />); 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+// const store = createStore(rootReducer)
+root.render(<Provider store={store}> <App /></Provider>);
 

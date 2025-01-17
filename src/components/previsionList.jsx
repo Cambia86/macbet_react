@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import Container from "react-bootstrap/esm/Container"
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
 import { FixtureAPI } from "../service/fixtureService"
 import PrevisionItemList from './previsionItemList';
 import PrevisionItemContent from './previsionItemContent'
+import { setNavigationDate } from '../store/reducer/navigationReducer'
 
 export default function PrevisionList(props) {
     const [prevList, setprevList] = useState([]);
     const [picchettoItems, setpicchettoItems] = useState([]);
     const [selectedOption, setSelectedOption] = useState([]);
+    const dispatch = useDispatch();
+    // const selectNavigation = state => state.navigation
+    // const navigation = useSelector(selectNavigation)
+    const currPrevDay = useSelector((state) => state.navigation.currentPrevisionDay);
 
-   
     const getPrevisionList = () => {
         FixtureAPI.getPrevisionList().then((prevJson) => {
             let prevreverse = prevJson.result.reverse();
@@ -55,12 +60,10 @@ export default function PrevisionList(props) {
     }
 
     const handleChange = (value) => {
+        dispatch(setNavigationDate(value))
         setSelectedOption(value)
         getPrevisionbydate(value);
     }
-
-
-
 
     return (
         <div className="">
@@ -69,7 +72,7 @@ export default function PrevisionList(props) {
                     <Column>
                         {prevList && prevList.length > 0 &&
                             <select
-                                value={selectedOption}
+                                value={navigation.currentPrevisionDay}
                                 onChange={e => handleChange(e.target.value, setSelectedOption)}>
                                 {prevList.map(o => (
                                     <option key={o} value={o}>{o}</option>
@@ -79,9 +82,9 @@ export default function PrevisionList(props) {
                     </Column>
                 </Row>
                 <Row>
-                    <Column xs={12} md={8}>
+                    <Column>
                         {picchettoItems && picchettoItems.result && picchettoItems.result.length > 0 && picchettoItems.result.map((pi, i) => {
-                            return <PrevisionItemContent key={i} picchettoItem={pi} currentPrevName={selectedOption}></PrevisionItemContent>
+                            return <PrevisionItemContent key={i} picchettoItem={pi} currentPrevName={currPrevDay}></PrevisionItemContent>
                         })}
                     </Column>
                 </Row>

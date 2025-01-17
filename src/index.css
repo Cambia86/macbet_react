@@ -62,7 +62,6 @@ main {
     width: 100%;
     max-width: 1000px;
     margin: auto;
-    padding: 1em;
 }
 
 h1 {
@@ -207,3 +206,84 @@ textarea {
 .textcenter{
     text-align: center;
 }
+
+
+.Button {
+    border: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .small {
+    padding: 4px 8px;
+  }
+  
+  .medium {
+    padding: 8px 16px;
+  }
+  
+  .large {
+    padding: 12px 24px;
+  }
+  
+  .blue {
+    background-color: blue;
+    color: white;
+  }
+  
+  .red {
+    background-color: red;
+    color: white;
+  }
+  
+  .green {
+    background-color: green;
+    color: white;
+  }
+
+  .circle{
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    padding: 0px;
+    display: inline-block;
+  }
+
+
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .navbar-logo a {
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .navbar-links ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-links a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+  }
+  
+  .navbar-links a:hover {
+    color: #00bcd4;
+  }

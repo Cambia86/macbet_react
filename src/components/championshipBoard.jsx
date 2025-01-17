@@ -162,6 +162,10 @@ export default function ChampionshipBoard(props) {
         navigate('/previsionList');
     }
 
+    const navigaJourney = () => {
+        navigate('/journey');
+    }
+
     // previsionList
     const navigatePage = () => {
         navigate('/previsionList',
@@ -202,14 +206,8 @@ export default function ChampionshipBoard(props) {
                 <TailSpin color="red" radius={"8px"} />
             ) : <div>
                 <Container>
-                    <Row>
-                        <Column xs>
-                            <button class="buttonNavigation" onClick={() => navigaHome()} >home</button>
-                            <button class="buttonNavigation" onClick={() => navigaPrevision()} >previsioni</button>
-                        </Column>
-                    </Row>
 
-                    <Row>
+                    <Row style={{ "margin-top": 10 }} >
                         <Column>
                             {championshipList && championshipList.length > 0 &&
                                 <select
