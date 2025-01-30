@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+// import { useSelector, useDispatch } from 'react-redux'
 import Container from "react-bootstrap/esm/Container"
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
@@ -7,18 +7,22 @@ import { FixtureAPI } from "../service/fixtureService"
 import PrevisionItemList from './previsionItemList';
 import PrevisionItemContent from './previsionItemContent'
 import { setNavigationDate } from '../store/reducer/navigationReducer'
+import { TailSpin } from "react-loader-spinner";
 
 export default function PrevisionList(props) {
     const [prevList, setprevList] = useState([]);
     const [picchettoItems, setpicchettoItems] = useState([]);
     const [selectedOption, setSelectedOption] = useState([]);
-    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
+    // const dispatch = useDispatch();
     // const selectNavigation = state => state.navigation
     // const navigation = useSelector(selectNavigation)
-    const currPrevDay = useSelector((state) => state.navigation.currentPrevisionDay);
+    // const currPrevDay = useSelector((state) => state.navigation.currentPrevisionDay);
 
     const getPrevisionList = () => {
+        setLoading(true);
         FixtureAPI.getPrevisionList().then((prevJson) => {
+            setLoading(false);
             let prevreverse = prevJson.result.reverse();
             setprevList(prevreverse);
             saveToLocalStorage('currentPicchettiList', prevreverse)
@@ -26,6 +30,7 @@ export default function PrevisionList(props) {
     }
 
     useEffect(() => {
+        // getPrevisionList();
         let _currentPicchetti = getFromLocalStorage('currentPicchettiList')
         let _currentPicchettoItem = getFromLocalStorage('currentPicchettoItem')
         if (_currentPicchetti != null) {
@@ -36,6 +41,16 @@ export default function PrevisionList(props) {
         if (_currentPicchettoItem) {
             setpicchettoItems(_currentPicchettoItem);
         }
+        // let _prevlist = ["2025-01-09_new",
+        //     "2025-01-14_new_2",
+        //     "2025-01-15_new",
+        //     "2025-01-16_new",
+        //     "2025-01-17_new",
+        //     "2025-01-18_new",
+        //     "2025-01-19_new",
+        //     "2025-01-20_new"]
+        //     setprevList(_prevlist)
+        // getPrevisionList();
     }, [])
 
     const getPrevisionbydate = (pItemDate) => {
@@ -60,7 +75,7 @@ export default function PrevisionList(props) {
     }
 
     const handleChange = (value) => {
-        dispatch(setNavigationDate(value))
+        // dispatch(setNavigationDate(value))
         setSelectedOption(value)
         getPrevisionbydate(value);
     }
@@ -72,8 +87,8 @@ export default function PrevisionList(props) {
                     <Column>
                         {prevList && prevList.length > 0 &&
                             <select
-                                value={navigation.currentPrevisionDay}
-                                onChange={e => handleChange(e.target.value, setSelectedOption)}>
+                                value={selectedOption}
+                                onChange={e => handleChange(e.target.value)}>
                                 {prevList.map(o => (
                                     <option key={o} value={o}>{o}</option>
                                 ))}
@@ -81,13 +96,16 @@ export default function PrevisionList(props) {
                         }
                     </Column>
                 </Row>
-                <Row>
-                    <Column>
-                        {picchettoItems && picchettoItems.result && picchettoItems.result.length > 0 && picchettoItems.result.map((pi, i) => {
-                            return <PrevisionItemContent key={i} picchettoItem={pi} currentPrevName={currPrevDay}></PrevisionItemContent>
-                        })}
-                    </Column>
-                </Row>
+                {loading ? (
+                    <TailSpin color="red" radius={"8px"} />
+                ) :
+                    <Row>
+                        <Column>
+                            {picchettoItems && picchettoItems.result && picchettoItems.result.length > 0 && picchettoItems.result.map((pi, i) => {
+                                return <PrevisionItemContent key={i} picchettoItem={pi} currentPrevName={selectedOption}></PrevisionItemContent>
+                            })}
+                        </Column>
+                    </Row>}
             </Container>
         </div>
     );

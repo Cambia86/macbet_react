@@ -43,7 +43,7 @@ export const FixtureAPI = {
 
   getPrevisionList: async function ( cancel = false) {
     const response = await api.request({
-      url: `/fixtures/picchetti/all/list`,
+      url: `/fixtures/picchetti/listed/all`,
       method: "GET",
       // retrieving the signal value by using the property name
       signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,

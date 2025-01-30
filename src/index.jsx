@@ -20,7 +20,8 @@ import './index.css';
 import MatchDetail from './components/matchDetail';
 import Tabs from './components/tabs';
 import { Provider } from 'react-redux';
-import store from './store/index';
+import store , { persistor } from './store/index';
+import { PersistGate } from 'redux-persist/integration/react';
 import Journey from './components/journey';
 
 
@@ -80,5 +81,9 @@ function App() {
 // ReactDOM.createRoot(document.getElementById('root')).render(<App />); 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // const store = createStore(rootReducer)
-root.render(<Provider store={store}> <App /></Provider>);
+root.render(<Provider store={store}>
+       <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+       <App />
+       </PersistGate>
+     </Provider>);
 
