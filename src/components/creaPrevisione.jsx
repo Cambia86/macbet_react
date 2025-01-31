@@ -11,6 +11,7 @@ export default function CreaPrevisione(props) {
     const [selectedDate, setSelectedDate] = useState(null);
     const [currPrevisions, setCurrPrevisions] = useState(null);
     const [historyResult, setHistoryResult] = useState(null);
+    const [sogliePicchetti,setsogliePicchetti] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const formatDate = (date) => {
@@ -195,395 +196,432 @@ export default function CreaPrevisione(props) {
         let bunde = null;
         let hist = null;
         setLoading(true)
-        FixtureAPI.getHistoryResult().then((histJson) => {
-            setHistoryResult(histJson);
-            hist = histJson;
-            FixtureAPI.getPicchetto(135, formattedDate).then((data) => {
-                sa = data;
-                FixtureAPI.getPicchetto(39, formattedDate).then((data2) => {
-                    pl = data2;
-                    FixtureAPI.getPicchetto(140, formattedDate).then((data3) => {
-                        liga = data3;
-                        FixtureAPI.getPicchetto(78, formattedDate).then((data4) => {
-                            bunde = data4;
-                            FixtureAPI.getPicchetto(61, formattedDate).then((data5) => {
-                                setLoading(false)
-                                lig1 = data5;
-                                let merged = [...sa.resprevisionoftheday, ...pl.resprevisionoftheday, ...lig1.resprevisionoftheday, ...liga.resprevisionoftheday, ...bunde.resprevisionoftheday]
-                                let mergedwithprev = merged.map(item => {
-                                    //Multigol24 
-                                    if (item.prevision.multi2_4.quotaPerc >= 76) {
-                                        addprevisiontoitem(
-                                            item, "MULTIGOL 2-4", item.prevision.multi2_4.quotaPerc);
-                                    }
-                                    //GetGoalInDate
-                                    if (item.prevision.goal.quotaPerc >= 75) {
-                                        addprevisiontoitem(item, "GOAL", item.prevision.goal.quotaPerc);
-                                    }
+        FixtureAPI.getSogliePicchetti().then((respsogliePicchetti) => {
+            setsogliePicchetti(respsogliePicchetti);
+            FixtureAPI.getHistoryResult().then((histJson) => {
+                setHistoryResult(histJson);
+                hist = histJson;
+                FixtureAPI.getPicchetto(135, formattedDate).then((data) => {
+                    sa = data;
+                    FixtureAPI.getPicchetto(39, formattedDate).then((data2) => {
+                        pl = data2;
+                        FixtureAPI.getPicchetto(140, formattedDate).then((data3) => {
+                            liga = data3;
+                            FixtureAPI.getPicchetto(78, formattedDate).then((data4) => {
+                                bunde = data4;
+                                FixtureAPI.getPicchetto(61, formattedDate).then((data5) => {
+                                    setLoading(false)
+                                    lig1 = data5;
+                                    let merged = [...sa.resprevisionoftheday, ...pl.resprevisionoftheday, ...lig1.resprevisionoftheday, ...liga.resprevisionoftheday, ...bunde.resprevisionoftheday]
+                                    let mergedwithprev = merged.map(item => {
 
-                                    //GetGoalCustomInDate
-                                    if (item.prevision.multi_casa_14.quotaPerc >= 70 &&
-                                        item.prevision.multi_trasf_14.quotaPerc >= 75) {
-                                        addprevisiontoitem(item, "GOALCUSTOM", item.prevision.goal.quotaPerc)
-                                    }
+                                        respsogliePicchetti.map(rp=>{
+                                            let _k= rp.key;
+                                            let _description= rp.description;
+                                            let _quota =item.prevision[_k].quotaPerc
+                                            let _league=item.fixture.league.id
 
-                                    // GetWinhomeInDate
-                                    if (item.prevision.winHome.quotaPerc >= 75 ||
-                                        (item.prevision.winAway.quotaPerc <= 25 &&
-                                            item.prevision.draw.quotaPerc <= 25)) {
-                                        addprevisiontoitem(item, "1", item.prevision.winHome.quotaPerc);
-                                    }
+                                            if(_league==135){
+                                                if(_quota>=rp.serieA.soglia && rp.serieA.perc>=80){
+                                                    addprevisiontoitem(item,_description, _quota)
+                                                }
+                                            }
+                                            if(_league==39){
+                                                if(_quota>=rp.premierLeague.soglia && rp.premierLeague.perc>=80){
+                                                    addprevisiontoitem(item,_description, _quota)
+                                                }
+                                            }
+                                            if(_league==140){
+                                                if(_quota>=rp.liga.soglia && rp.liga.perc>=80){
+                                                    addprevisiontoitem(item,_description, _quota)
+                                                }
+                                            }
+                                            if(_league==78){
+                                                if(_quota>=rp.bundesliga.soglia && rp.bundesliga.perc>=80){
+                                                    addprevisiontoitem(item,_description, _quota)
+                                                }
+                                            }
+                                            if(_league==61){
+                                                if(_quota>=rp.ligue1.soglia && rp.ligue1.perc>=80){
+                                                    addprevisiontoitem(item,_description, _quota)
+                                                }
+                                            }
+                                        })
 
-                                    // GetUMulti13CasaInDate
-                                    if (item.prevision.multi_casa_13.quotaPerc >= 78) {
-                                        addprevisiontoitem(
-                                            item, "multi13casa", item.prevision.multi_casa_13.quotaPerc);
-                                    }
+                                        // //Multigol24 
+                                        // if (item.prevision.multi2_4.quotaPerc >= 76) {
+                                        //     addprevisiontoitem(
+                                        //         item, "MULTIGOL 2-4", item.prevision.multi2_4.quotaPerc);
+                                        // }
+                                        // //GetGoalInDate
+                                        // if (item.prevision.goal.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(item, "GOAL", item.prevision.goal.quotaPerc);
+                                        // }
 
-                                    // GetUMulti13OspiteInDate
-                                    if (item.prevision.multi_trasf_13.quotaPerc >= 78) {
-                                        addprevisiontoitem(item, "multi13ospite", item.prevision.multi_trasf_13.quotaPerc);
-                                    }
+                                        // //GetGoalCustomInDate
+                                        // if (item.prevision.multi_casa_14.quotaPerc >= 70 &&
+                                        //     item.prevision.multi_trasf_14.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(item, "GOALCUSTOM", item.prevision.goal.quotaPerc)
+                                        // }
 
-                                    // GetUMulti24CasaInDate
-                                    if (item.prevision.multi_casa_24.quotaPerc >= 65) {
-                                        addprevisiontoitem(item, "multi24casa", item.prevision.multi_casa_13.quotaPerc);
-                                    }
+                                        // // GetWinhomeInDate
+                                        // if (item.prevision.winHome.quotaPerc >= 75 ||
+                                        //     (item.prevision.winAway.quotaPerc <= 25 &&
+                                        //         item.prevision.draw.quotaPerc <= 25)) {
+                                        //     addprevisiontoitem(item, "1", item.prevision.winHome.quotaPerc);
+                                        // }
 
-                                    // GetOver15InDate
-                                    if (item.prevision.over_15.quotaPerc > 75) {
-                                        addprevisiontoitem(item, "OVER 1,5", item.prevision.over_15.quotaPerc);
-                                    }
+                                        // // GetUMulti13CasaInDate
+                                        // if (item.prevision.multi_casa_13.quotaPerc >= 78) {
+                                        //     addprevisiontoitem(
+                                        //         item, "multi13casa", item.prevision.multi_casa_13.quotaPerc);
+                                        // }
 
-                                    // GetOver25InDate
-                                    if (item.prevision.over_25.quotaPerc >= 75) {
-                                        addprevisiontoitem(item, "OVER 2,5", item.prevision.over_25.quotaPerc);
-                                    }
+                                        // // GetUMulti13OspiteInDate
+                                        // if (item.prevision.multi_trasf_13.quotaPerc >= 78) {
+                                        //     addprevisiontoitem(item, "multi13ospite", item.prevision.multi_trasf_13.quotaPerc);
+                                        // }
 
-                                    // GetUnder35InDate
-                                    if (item.prevision.under_35.quotaPerc >= 75) {
-                                        addprevisiontoitem(item, "UNDER 3,5", item.prevision.under_35.quotaPerc);
-                                    }
+                                        // // GetUMulti24CasaInDate
+                                        // if (item.prevision.multi_casa_24.quotaPerc >= 65) {
+                                        //     addprevisiontoitem(item, "multi24casa", item.prevision.multi_casa_13.quotaPerc);
+                                        // }
 
-                                    // homeWin1halfInDate
-                                    if (item.prevision.casaVinceAlmenounTempo.quotaPerc >= 75) {
-                                        addprevisiontoitem(item, "HOME W UN T.", item.prevision.casaVinceAlmenounTempo.quotaPerc);
-                                    }
+                                        // // GetOver15InDate
+                                        // if (item.prevision.over_15.quotaPerc > 75) {
+                                        //     addprevisiontoitem(item, "OVER 1,5", item.prevision.over_15.quotaPerc);
+                                        // }
 
-                                    // awayWin1halfInDate
-                                    if (item.prevision.fuoriVinceAlmenounTempo.quotaPerc >= 75) {
-                                        addprevisiontoitem(item, "FUORI VINCE UN TEMPO", item.prevision.fuoriVinceAlmenounTempo.quotaPerc);
-                                    }
+                                        // // GetOver25InDate
+                                        // if (item.prevision.over_25.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(item, "OVER 2,5", item.prevision.over_25.quotaPerc);
+                                        // }
 
-                                    // multi23risk
-                                    if (item.prevision.over_15.quotaPerc >= 75 &&
-                                        item.prevision.under_35.quotaPerc > 75) {
-                                        addprevisiontoitem(item, "MULTIGOL 2-3", 75);
-                                    }
+                                        // // GetUnder35InDate
+                                        // if (item.prevision.under_35.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(item, "UNDER 3,5", item.prevision.under_35.quotaPerc);
+                                        // }
 
-                                    // under2emezzorisk
-                                    if (item.prevision.under_25.quotaPerc >= 75) {
-                                        addprevisiontoitem(
-                                            item, "UNDER 2,5", item.prevision.under_25.quotaPerc);
-                                    }
+                                        // // homeWin1halfInDate
+                                        // if (item.prevision.casaVinceAlmenounTempo.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(item, "HOME W UN T.", item.prevision.casaVinceAlmenounTempo.quotaPerc);
+                                        // }
 
-                                    // drawnobetand1
-                                    if (item.prevision.multi_casa_14.quotaPerc >= 78 &&
-                                        item.prevision.winHome.quotaPerc > 60) {
-                                        addprevisiontoitem(item, "1 DRAW NO BET", 0);
-                                    }
+                                        // // awayWin1halfInDate
+                                        // if (item.prevision.fuoriVinceAlmenounTempo.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(item, "FUORI VINCE UN TEMPO", item.prevision.fuoriVinceAlmenounTempo.quotaPerc);
+                                        // }
 
-                                    // over05homeunder25away
-                                    if (item.prevision.ov05CasaANDun25Fuori.quotaPerc >= 75) {
-                                        addprevisiontoitem(item, "Ov 0,5H Un 2,5A",
-                                            item.prevision.ov05CasaANDun25Fuori.quotaPerc);
-                                    }
+                                        // // multi23risk
+                                        // if (item.prevision.over_15.quotaPerc >= 75 &&
+                                        //     item.prevision.under_35.quotaPerc > 75) {
+                                        //     addprevisiontoitem(item, "MULTIGOL 2-3", 75);
+                                        // }
 
-                                    // win home corner
-                                    if (item.prevision.winHomeCorner.quotaPerc >= 70) {
-                                        addprevisiontoitem(item, "WIN_HOME_CORNER",
-                                            item.prevision.winHomeCorner.quotaPerc);
-                                    }
+                                        // // under2emezzorisk
+                                        // if (item.prevision.under_25.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(
+                                        //         item, "UNDER 2,5", item.prevision.under_25.quotaPerc);
+                                        // }
 
-                                    // win away corner
-                                    if (item.prevision.winAwayCorner.quotaPerc >= 70) {
-                                        addprevisiontoitem(item, "WIN_AWAY_CORNER",
-                                            item.prevision.winAwayCorner.quotaPerc);
-                                    }
+                                        // // drawnobetand1
+                                        // if (item.prevision.multi_casa_14.quotaPerc >= 78 &&
+                                        //     item.prevision.winHome.quotaPerc > 60) {
+                                        //     addprevisiontoitem(item, "1 DRAW NO BET", 0);
+                                        // }
 
-                                     // win home falli
-                                     if (item.prevision.winHomeFalli.quotaPerc >= 70) {
-                                        addprevisiontoitem(item, "WIN_HOME_FALLI",
-                                            item.prevision.winHomeCorner.quotaPerc);
-                                    }
+                                        // // over05homeunder25away
+                                        // if (item.prevision.ov05CasaANDun25Fuori.quotaPerc >= 75) {
+                                        //     addprevisiontoitem(item, "Ov 0,5H Un 2,5A",
+                                        //         item.prevision.ov05CasaANDun25Fuori.quotaPerc);
+                                        // }
 
-                                    // win away falli
-                                    if (item.prevision.winAwayFalli.quotaPerc >= 70) {
-                                        addprevisiontoitem(item, "WIN_AWAY_FALLI",
-                                            item.prevision.winAwayCorner.quotaPerc);
-                                    }
+                                        // // win home corner
+                                        // if (item.prevision.winHomeCorner.quotaPerc >= 70) {
+                                        //     addprevisiontoitem(item, "WIN_HOME_CORNER",
+                                        //         item.prevision.winHomeCorner.quotaPerc);
+                                        // }
 
-                                     // win home Tiri porta
-                                     if (item.prevision.winHomeTiriPorta.quotaPerc > (item.prevision.winAwayTiriPorta.quotaPerc*2)) {
-                                        addprevisiontoitem(item, "WIN_HOME_TIRI_PORTA",
-                                            item.prevision.winHomeTiriPorta.quotaPerc);
-                                    }
+                                        // // win away corner
+                                        // if (item.prevision.winAwayCorner.quotaPerc >= 70) {
+                                        //     addprevisiontoitem(item, "WIN_AWAY_CORNER",
+                                        //         item.prevision.winAwayCorner.quotaPerc);
+                                        // }
 
-                                     // win away Tiri porta
-                                     if ((item.prevision.winHomeTiriPorta.quotaPerc*2) < (item.prevision.winAwayTiriPorta.quotaPerc)) {
-                                        addprevisiontoitem(item, "WIN_AWAY_TIRI_PORTA",
-                                            item.prevision.winAwayTiriPorta.quotaPerc);
-                                    }
+                                        // // win home falli
+                                        // if (item.prevision.winHomeFalli.quotaPerc >= 70) {
+                                        //     addprevisiontoitem(item, "WIN_HOME_FALLI",
+                                        //         item.prevision.winHomeCorner.quotaPerc);
+                                        // }
 
-                                     // win home Tiri totali
-                                     if (item.prevision.winHomeTiriTotali.quotaPerc > (item.prevision.winAwayTiriTotali.quotaPerc*2)) {
-                                        addprevisiontoitem(item, "WIN_HOME_TIRI_TOTALI",
-                                            item.prevision.winHomeTiriTotali.quotaPerc);
-                                    }
+                                        // // win away falli
+                                        // if (item.prevision.winAwayFalli.quotaPerc >= 70) {
+                                        //     addprevisiontoitem(item, "WIN_AWAY_FALLI",
+                                        //         item.prevision.winAwayCorner.quotaPerc);
+                                        // }
 
-                                     // win away Tiri totali
-                                     if ((item.prevision.winHomeTiriTotali.quotaPerc*2) < (item.prevision.winAwayTiriTotali.quotaPerc)) {
-                                        addprevisiontoitem(item, "WIN_AWAY_TIRI_TOTALI",
-                                            item.prevision.winAwayTiriTotali.quotaPerc);
-                                    }
-                                    // AddHistoryPrevision
-                                    return item
+                                        // // win home Tiri porta
+                                        // if (item.prevision.winHomeTiriPorta.quotaPerc > (item.prevision.winAwayTiriPorta.quotaPerc * 2)) {
+                                        //     addprevisiontoitem(item, "WIN_HOME_TIRI_PORTA",
+                                        //         item.prevision.winHomeTiriPorta.quotaPerc);
+                                        // }
+
+                                        // // win away Tiri porta
+                                        // if ((item.prevision.winHomeTiriPorta.quotaPerc * 2) < (item.prevision.winAwayTiriPorta.quotaPerc)) {
+                                        //     addprevisiontoitem(item, "WIN_AWAY_TIRI_PORTA",
+                                        //         item.prevision.winAwayTiriPorta.quotaPerc);
+                                        // }
+
+                                        // // win home Tiri totali
+                                        // if (item.prevision.winHomeTiriTotali.quotaPerc > (item.prevision.winAwayTiriTotali.quotaPerc * 2)) {
+                                        //     addprevisiontoitem(item, "WIN_HOME_TIRI_TOTALI",
+                                        //         item.prevision.winHomeTiriTotali.quotaPerc);
+                                        // }
+
+                                        // // win away Tiri totali
+                                        // if ((item.prevision.winHomeTiriTotali.quotaPerc * 2) < (item.prevision.winAwayTiriTotali.quotaPerc)) {
+                                        //     addprevisiontoitem(item, "WIN_AWAY_TIRI_TOTALI",
+                                        //         item.prevision.winAwayTiriTotali.quotaPerc);
+                                        // }
+                                        // AddHistoryPrevision
+                                        return item
+                                    })
+
+                                    let mergedpreperc = mergedwithprev.map(value => {
+                                        let prev = value;
+                                        let hometeamid = value.fixture.teams.home.id;
+                                        let awayteamid = value.fixture.teams.away.id;
+                                        if (prev.prev1 != null) {
+                                            let res = getPercentageSuccessBychampionshipandprevision(
+                                                prev.prev1, prev.fixture.league.name, hist.result);
+                                            prev.prev1historyprob = res.percentage != undefined ? res.percentage : 0;
+                                            prev.success1Home =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.success1Away =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail1Home =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail1Away =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                        }
+                                        if (prev.prev2 != null) {
+                                            let res = getPercentageSuccessBychampionshipandprevision(
+                                                prev.prev2, prev.fixture.league.name, hist.result);
+                                            prev.prev2historyprob = res.percentage != undefined ? res.percentage : 0;
+                                            prev.success2Home =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.success2Away =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail2Home =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail2Away =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                        }
+                                        if (prev.prev3 != null) {
+                                            let res = getPercentageSuccessBychampionshipandprevision(
+                                                prev.prev3, prev.fixture.league.name, hist.result);
+                                            prev.prev3historyprob = res.percentage != undefined ? res.percentage : 0;
+                                            prev.success3Home =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.success3Away =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail3Home =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail3Away =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                        }
+                                        if (prev.prev4 != null) {
+                                            let res = getPercentageSuccessBychampionshipandprevision(
+                                                prev.prev4, prev.fixture.league.name, hist.result);
+                                            prev.prev4historyprob = res.percentage != undefined ? res.percentage : 0;
+                                            prev.success4Home =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.success4Away =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail4Home =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail4Away =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                        }
+                                        if (prev.prev5 != null) {
+                                            let res = getPercentageSuccessBychampionshipandprevision(
+                                                prev.prev5, prev.fixture.league.name, hist.result);
+                                            prev.prev5historyprob = res.percentage != undefined ? res.percentage : 0;
+                                            prev.success5Home =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.success5Away =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail5Home =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail5Away =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                        }
+
+                                        if (prev.prev6 != null) {
+                                            let res = getPercentageSuccessBychampionshipandprevision(
+                                                prev.prev6, prev.fixture.league.name, hist.result);
+                                            prev.prev5historyprob = res.percentage != undefined ? res.percentage : 0;
+                                            prev.success6Home =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.success6Away =
+                                                (res.successTeams != null && res.successTeams.length > 0)
+                                                    ? res.successTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail6Home =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == hometeamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                            prev.fail6Away =
+                                                (res.failureTeams != null && res.failureTeams.length > 0)
+                                                    ? res.failureTeams
+                                                        .map((element) => element.id == awayteamid ? 1 : 0)
+                                                        .reduce((value, element) => value + element)
+                                                    : 0;
+                                        }
+
+                                        let retobj = {
+                                            "match": prev.fixture,
+                                            "previsionjson": prev.prevision,
+                                            "prev1": prev.prev1,
+                                            "prev1quotaPerc": prev.prev1quotaPerc,
+                                            "prev1historyprob": prev.prev1historyprob,
+                                            "success1Home": prev.success1Home,
+                                            "fail1Home": prev.fail1Home,
+                                            "success1Away": prev.success1Away,
+                                            "fail1Away": prev.fail1Away,
+                                            "prev2": prev.prev2,
+                                            "prev2quotaPerc": prev.prev2quotaPerc,
+                                            "prev2historyprob": prev.prev2historyprob,
+                                            "success2Home": prev.success2Home,
+                                            "fail2Home": prev.fail2Home,
+                                            "success2Away": prev.success2Away,
+                                            "fail2Away": prev.fail2Away,
+                                            "prev3": prev.prev3,
+                                            "prev3quotaPerc": prev.prev3quotaPerc,
+                                            "prev3historyprob": prev.prev3historyprob,
+                                            "success3Home": prev.success3Home,
+                                            "fail3Home": prev.fail3Home,
+                                            "success3Away": prev.success3Away,
+                                            "fail3Away": prev.fail3Away,
+                                            "prev4": prev.prev4,
+                                            "prev4quotaPerc": prev.prev4quotaPerc,
+                                            "prev4historyprob": prev.prev4historyprob,
+                                            "success4Home": prev.success4Home,
+                                            "fail4Home": prev.fail4Home,
+                                            "success4Away": prev.success4Away,
+                                            "fail4Away": prev.fail4Away,
+
+                                            "prev5": prev.prev5,
+                                            "prev5quotaPerc": prev.prev5quotaPerc,
+                                            "prev5historyprob": prev.prev5historyprob,
+                                            "success5Home": prev.success5Home,
+                                            "fail5Home": prev.fail5Home,
+                                            "success5Away": prev.success5Away,
+                                            "fail5Away": prev.fail5Away,
+
+                                            "prev6": prev.prev6,
+                                            "prev6quotaPerc": prev.prev6quotaPerc,
+                                            "prev6historyprob": prev.prev6historyprob,
+                                            "success6Home": prev.success6Home,
+                                            "fail6Home": prev.fail6Home,
+                                            "success6Away": prev.success6Away,
+                                            "fail6Away": prev.fail6Away,
+
+
+                                        }
+                                        return retobj;
+                                    })
+
+                                    setCurrPrevisions(mergedpreperc)
                                 })
-
-                                let mergedpreperc = mergedwithprev.map(value => {
-                                    let prev = value;
-                                    let hometeamid = value.fixture.teams.home.id;
-                                    let awayteamid = value.fixture.teams.away.id;
-                                    if (prev.prev1 != null) {
-                                        let res = getPercentageSuccessBychampionshipandprevision(
-                                            prev.prev1, prev.fixture.league.name, hist.result);
-                                        prev.prev1historyprob = res.percentage != undefined ? res.percentage : 0;
-                                        prev.success1Home =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.success1Away =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail1Home =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail1Away =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                    }
-                                    if (prev.prev2 != null) {
-                                        let res = getPercentageSuccessBychampionshipandprevision(
-                                            prev.prev2, prev.fixture.league.name, hist.result);
-                                        prev.prev2historyprob = res.percentage != undefined ? res.percentage : 0;
-                                        prev.success2Home =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.success2Away =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail2Home =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail2Away =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                    }
-                                    if (prev.prev3 != null) {
-                                        let res = getPercentageSuccessBychampionshipandprevision(
-                                            prev.prev3, prev.fixture.league.name, hist.result);
-                                        prev.prev3historyprob = res.percentage != undefined ? res.percentage : 0;
-                                        prev.success3Home =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.success3Away =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail3Home =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail3Away =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                    }
-                                    if (prev.prev4 != null) {
-                                        let res = getPercentageSuccessBychampionshipandprevision(
-                                            prev.prev4, prev.fixture.league.name, hist.result);
-                                        prev.prev4historyprob = res.percentage != undefined ? res.percentage : 0;
-                                        prev.success4Home =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.success4Away =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail4Home =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail4Away =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                    }
-                                    if (prev.prev5 != null) {
-                                        let res = getPercentageSuccessBychampionshipandprevision(
-                                            prev.prev5, prev.fixture.league.name, hist.result);
-                                        prev.prev5historyprob = res.percentage != undefined ? res.percentage : 0;
-                                        prev.success5Home =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.success5Away =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail5Home =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail5Away =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                    }
-
-                                    if (prev.prev6 != null) {
-                                        let res = getPercentageSuccessBychampionshipandprevision(
-                                            prev.prev6, prev.fixture.league.name, hist.result);
-                                        prev.prev5historyprob = res.percentage != undefined ? res.percentage : 0;
-                                        prev.success6Home =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.success6Away =
-                                            (res.successTeams != null && res.successTeams.length > 0)
-                                                ? res.successTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail6Home =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == hometeamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                        prev.fail6Away =
-                                            (res.failureTeams != null && res.failureTeams.length > 0)
-                                                ? res.failureTeams
-                                                    .map((element) => element.id == awayteamid ? 1 : 0)
-                                                    .reduce((value, element) => value + element)
-                                                : 0;
-                                    }
-
-                                    let retobj = {
-                                        "match": prev.fixture,
-                                        "previsionjson": prev.prevision,
-                                        "prev1": prev.prev1,
-                                        "prev1quotaPerc": prev.prev1quotaPerc,
-                                        "prev1historyprob": prev.prev1historyprob,
-                                        "success1Home": prev.success1Home,
-                                        "fail1Home": prev.fail1Home,
-                                        "success1Away": prev.success1Away,
-                                        "fail1Away": prev.fail1Away,
-                                        "prev2": prev.prev2,
-                                        "prev2quotaPerc": prev.prev2quotaPerc,
-                                        "prev2historyprob": prev.prev2historyprob,
-                                        "success2Home": prev.success2Home,
-                                        "fail2Home": prev.fail2Home,
-                                        "success2Away": prev.success2Away,
-                                        "fail2Away": prev.fail2Away,
-                                        "prev3": prev.prev3,
-                                        "prev3quotaPerc": prev.prev3quotaPerc,
-                                        "prev3historyprob": prev.prev3historyprob,
-                                        "success3Home": prev.success3Home,
-                                        "fail3Home": prev.fail3Home,
-                                        "success3Away": prev.success3Away,
-                                        "fail3Away": prev.fail3Away,
-                                        "prev4": prev.prev4,
-                                        "prev4quotaPerc": prev.prev4quotaPerc,
-                                        "prev4historyprob": prev.prev4historyprob,
-                                        "success4Home": prev.success4Home,
-                                        "fail4Home": prev.fail4Home,
-                                        "success4Away": prev.success4Away,
-                                        "fail4Away": prev.fail4Away,
-
-                                        "prev5": prev.prev5,
-                                        "prev5quotaPerc": prev.prev5quotaPerc,
-                                        "prev5historyprob": prev.prev5historyprob,
-                                        "success5Home": prev.success5Home,
-                                        "fail5Home": prev.fail5Home,
-                                        "success5Away": prev.success5Away,
-                                        "fail5Away": prev.fail5Away,
-
-                                        "prev6": prev.prev6,
-                                        "prev6quotaPerc": prev.prev6quotaPerc,
-                                        "prev6historyprob": prev.prev6historyprob,
-                                        "success6Home": prev.success6Home,
-                                        "fail6Home": prev.fail6Home,
-                                        "success6Away": prev.success6Away,
-                                        "fail6Away": prev.fail6Away,
-                                        
-
-                                    }
-                                    return retobj;
-                                })
-
-                                setCurrPrevisions(mergedpreperc)
                             })
                         })
                     })
@@ -728,8 +766,8 @@ export default function CreaPrevisione(props) {
                                         </Row>
                                     </Column>
                                 </Row>
-                            } 
-                            
+                            }
+
                             {pi.prev6 != undefined && pi.prev6 != "" &&
                                 <Row>
                                     <Column>
