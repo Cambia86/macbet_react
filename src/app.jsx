@@ -1,9 +1,10 @@
 import { useState, useEffect, createContext } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+// import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Layout from "./pages/Layout";
 import ChampionshipBoard from './components/championshipBoard';
 import Tabs from './components/tabs';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 export default function App() {
 
@@ -38,7 +39,7 @@ export default function App() {
         //   <p>Questo è il tuo progetto base pronto per deploy su Render.</p>
         // </div>
         <main>
-            <BrowserRouter>
+            <Router>
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<ChampionshipBoard />} />
@@ -48,7 +49,7 @@ export default function App() {
                         <Route path="*" element={<NoPage />} /> */}
                     </Route>
                 </Routes>
-            </BrowserRouter>
+            </Router>
         </main>
     )
 }
