@@ -14,6 +14,7 @@ export default defineConfig({
     hmr: {
       overlay:false
       // clientPort: 443 // Run the websocket server on the SSL port
-    }
+    },
+    historyApiFallback: true
   }
 });
