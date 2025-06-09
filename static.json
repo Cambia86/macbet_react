@@ -1,9 +1,8 @@
 {
-  "redirects": [
-    {
-      "source": "/*",
-      "destination": "/index.html",
-      "type": 200
-    }
-  ]
+  "routes": {
+    "/api/*": {
+      "origin": "https://macbet-backend.onrender.com"
+    },
+    "/**": "index.html"
+  }
 }
