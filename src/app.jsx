@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom/client';
 import Layout from "./pages/Layout";
 import ChampionshipBoard from './components/championshipBoard';
 import Tabs from './components/tabs';
+import Journey from './components/journey';
+import MatchDetail from './components/matchDetail';
+import NoPage from "./pages/NoPage";
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 export default function App() {
