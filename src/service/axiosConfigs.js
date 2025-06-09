@@ -3,9 +3,8 @@ import axios from "axios"
 // import { notification } from "antd"
 
 export const api = axios.create({
-    //baseURL: "https://macbet-be.glitch.me/api",
-    baseURL:"https://macbet-backend.onrender.com/api"
-    //baseURL:"http://localhost:3001/api"
+    //baseURL:"https://macbet-backend.onrender.com/api"
+    baseURL:"http://localhost:3001/api"
 })
 
 // defining a custom error handler for all APIs

@@ -9,9 +9,9 @@ import { useNavigate } from 'react-router-dom'
 import { FixtureAPI } from "../service/fixtureService"
 import { useSelector, useDispatch } from 'react-redux'
 // import journeySlice from '../store/slices/journeySlice'
-import { addToJourney,removeFromJourney } from '../store/reducer/journeyReducer'
+import { addToJourney, removeFromJourney } from '../store/reducer/journeyReducer'
 import { Journey } from '../class/journey'
-import Button from  '../sharedcomponent/button'
+import Button from '../sharedcomponent/button'
 
 export default function PrevisionItemContent(props) {
     const navigate = useNavigate();
@@ -23,22 +23,22 @@ export default function PrevisionItemContent(props) {
     // const journeys = useSelector(selectJourney)
     const currentSelectedJourney = useSelector((state) => state.journey.currentJourney);
 
-    const removeFromJourneyfn= (picchettoItem, prevision,percSuccess) => {
+    const removeFromJourneyfn = (picchettoItem, prevision, percSuccess) => {
         if (props.currentPrevName.length > 0)
             dispatch(removeFromJourney(picchettoItem.match.fixture.id));
-        else{
+        else {
             // todo alert
         }
     }
 
-    const addToJourneyfn = (picchettoItem, prevision,percSuccess) => {
+    const addToJourneyfn = (picchettoItem, prevision, percSuccess) => {
         // dispatch(increment({picchettoItem,prevision}));
         if (props.currentPrevName.length > 0)
             dispatch(addToJourney(
-                new Journey(props.currentPrevName,percSuccess, picchettoItem.match.fixture.id,
-                     prevision,picchettoItem.match.teams.home, 
-                     picchettoItem.match.teams.away)));
-        else{
+                new Journey(props.currentPrevName, percSuccess, picchettoItem.match.fixture.id,
+                    prevision, picchettoItem.match.teams.home,
+                    picchettoItem.match.teams.away)));
+        else {
             // todo alert
         }
     }
@@ -73,9 +73,9 @@ export default function PrevisionItemContent(props) {
         }
     }
 
-    const isSelected=(picchetto,prev)=>{
-        let isselected=currentSelectedJourney.filter(d=>d.fixtureId==picchetto.match.fixture.id && d.previsionType==prev);
-        if(isselected.length>0)
+    const isSelected = (picchetto, prev) => {
+        let isselected = currentSelectedJourney.filter(d => d.fixtureId == picchetto.match.fixture.id && d.previsionType == prev);
+        if (isselected.length > 0)
             return true;
         else
             return false;
@@ -157,11 +157,11 @@ export default function PrevisionItemContent(props) {
 
             {props.picchettoItem != "" && props.picchettoItem.prev1 != undefined && props.picchettoItem.prev1 != "" &&
                 <Row>
-                  <Column>
-                  { !isSelected(props.picchettoItem,props.picchettoItem.prev1) ? <Button value="+" color="blue" size="small"  type="circle" onClick={()=>addToJourneyfn(props.picchettoItem, props.picchettoItem.prev1,props.picchettoItem.prev1quotaPerc)}></Button>
-                  :<Button value="-" color="red" size="small"  type="circle" onClick={()=>removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev1,props.picchettoItem.prev1quotaPerc)}></Button>}
-                  </Column>
-                  <Column>{props.picchettoItem.prev1}</Column>
+                    <Column>
+                        {!isSelected(props.picchettoItem, props.picchettoItem.prev1) ? <Button value="+" color="blue" size="small" type="circle" onClick={() => addToJourneyfn(props.picchettoItem, props.picchettoItem.prev1, props.picchettoItem.prev1quotaPerc)}></Button>
+                            : <Button value="-" color="red" size="small" type="circle" onClick={() => removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev1, props.picchettoItem.prev1quotaPerc)}></Button>}
+                    </Column>
+                    <Column>{props.picchettoItem.prev1}</Column>
                     <Column>%{props.picchettoItem.prev1quotaPerc}</Column>
                     <Column>Hist{(props.picchettoItem.prev1historyprob != "" && props.picchettoItem.prev1historyprob > 0) ? props.picchettoItem.prev1historyprob.toFixed(2) : 0}</Column>
                     <Column>
@@ -175,8 +175,8 @@ export default function PrevisionItemContent(props) {
             {props.picchettoItem != "" && props.picchettoItem.prev2 != undefined && props.picchettoItem.prev2 != "" &&
                 <Row>
                     <Column>
-                    { !isSelected(props.picchettoItem,props.picchettoItem.prev2) ? <Button value="+" color="blue" size="small"  type="circle" onClick={()=>addToJourneyfn(props.picchettoItem, props.picchettoItem.prev2,props.picchettoItem.prev2quotaPerc)}></Button>
-                  :<Button value="-" color="red" size="small"  type="circle" onClick={()=>removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev2,props.picchettoItem.prev2quotaPerc)}></Button>}
+                        {!isSelected(props.picchettoItem, props.picchettoItem.prev2) ? <Button value="+" color="blue" size="small" type="circle" onClick={() => addToJourneyfn(props.picchettoItem, props.picchettoItem.prev2, props.picchettoItem.prev2quotaPerc)}></Button>
+                            : <Button value="-" color="red" size="small" type="circle" onClick={() => removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev2, props.picchettoItem.prev2quotaPerc)}></Button>}
                     </Column>
                     <Column>{props.picchettoItem.prev2}</Column>
                     <Column>%{props.picchettoItem.prev2quotaPerc}</Column>
@@ -192,8 +192,8 @@ export default function PrevisionItemContent(props) {
             {props.picchettoItem != "" && props.picchettoItem.prev3 != undefined && props.picchettoItem.prev3 != "" &&
                 <Row>
                     <Column>
-                    { !isSelected(props.picchettoItem,props.picchettoItem.prev3) ? <Button value="+" color="blue" size="small"  type="circle" onClick={()=>addToJourneyfn(props.picchettoItem, props.picchettoItem.prev3,props.picchettoItem.prev3quotaPerc)}></Button>
-                  :<Button value="-" color="red" size="small"  type="circle" onClick={()=>removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev3,props.picchettoItem.prev3quotaPerc)}></Button>}
+                        {!isSelected(props.picchettoItem, props.picchettoItem.prev3) ? <Button value="+" color="blue" size="small" type="circle" onClick={() => addToJourneyfn(props.picchettoItem, props.picchettoItem.prev3, props.picchettoItem.prev3quotaPerc)}></Button>
+                            : <Button value="-" color="red" size="small" type="circle" onClick={() => removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev3, props.picchettoItem.prev3quotaPerc)}></Button>}
                     </Column>
                     <Column>{props.picchettoItem.prev3}</Column>
                     <Column>%{props.picchettoItem.prev3quotaPerc}</Column>
@@ -209,9 +209,9 @@ export default function PrevisionItemContent(props) {
             {props.picchettoItem != "" && props.picchettoItem.prev4 != undefined && props.picchettoItem.prev4 != "" &&
                 <Row>
                     <Column>
-                    { !isSelected(props.picchettoItem,props.picchettoItem.prev4) ? <Button value="+" color="blue" size="small"  type="circle" onClick={()=>addToJourneyfn(props.picchettoItem, props.picchettoItem.prev4,props.picchettoItem.prev4quotaPerc)}></Button>
-                  :<Button value="-" color="red" size="small"  type="circle" onClick={()=>removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev4,props.picchettoItem.prev4quotaPerc)}></Button>}
-               
+                        {!isSelected(props.picchettoItem, props.picchettoItem.prev4) ? <Button value="+" color="blue" size="small" type="circle" onClick={() => addToJourneyfn(props.picchettoItem, props.picchettoItem.prev4, props.picchettoItem.prev4quotaPerc)}></Button>
+                            : <Button value="-" color="red" size="small" type="circle" onClick={() => removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev4, props.picchettoItem.prev4quotaPerc)}></Button>}
+
                     </Column>
                     <Column>{props.picchettoItem.prev4}</Column>
                     <Column>%{props.picchettoItem.prev4quotaPerc}</Column>
@@ -228,9 +228,9 @@ export default function PrevisionItemContent(props) {
             {props.picchettoItem != "" && props.picchettoItem.prev5 != undefined && props.picchettoItem.prev5 != "" &&
                 <Row>
                     <Column>
-                    { !isSelected(props.picchettoItem,props.picchettoItem.prev5) ? <Button value="+" color="blue" size="small"  type="circle" onClick={()=>addToJourneyfn(props.picchettoItem, props.picchettoItem.prev5,props.picchettoItem.prev5quotaPerc)}></Button>
-                  :<Button value="-" color="red" size="small"  type="circle" onClick={()=>removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev5,props.picchettoItem.prev5quotaPerc)}></Button>}
-               
+                        {!isSelected(props.picchettoItem, props.picchettoItem.prev5) ? <Button value="+" color="blue" size="small" type="circle" onClick={() => addToJourneyfn(props.picchettoItem, props.picchettoItem.prev5, props.picchettoItem.prev5quotaPerc)}></Button>
+                            : <Button value="-" color="red" size="small" type="circle" onClick={() => removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev5, props.picchettoItem.prev5quotaPerc)}></Button>}
+
                     </Column>
                     <Column>{props.picchettoItem.prev5}</Column>
                     <Column>%{props.picchettoItem.prev5quotaPerc}</Column>
@@ -246,9 +246,9 @@ export default function PrevisionItemContent(props) {
             {props.picchettoItem != "" && props.picchettoItem.prev6 != undefined && props.picchettoItem.prev6 != "" &&
                 <Row>
                     <Column>
-                    { !isSelected(props.picchettoItem,props.picchettoItem.prev6) ? <Button value="+" color="blue" size="small"  type="circle" onClick={()=>addToJourneyfn(props.picchettoItem, props.picchettoItem.prev6,props.picchettoItem.prev6quotaPerc)}></Button>
-                  :<Button value="-" color="red" size="small"  type="circle" onClick={()=>removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev6,props.picchettoItem.prev6quotaPerc)}></Button>}
-               
+                        {!isSelected(props.picchettoItem, props.picchettoItem.prev6) ? <Button value="+" color="blue" size="small" type="circle" onClick={() => addToJourneyfn(props.picchettoItem, props.picchettoItem.prev6, props.picchettoItem.prev6quotaPerc)}></Button>
+                            : <Button value="-" color="red" size="small" type="circle" onClick={() => removeFromJourneyfn(props.picchettoItem, props.picchettoItem.prev6, props.picchettoItem.prev6quotaPerc)}></Button>}
+
                     </Column>
                     <Column>{props.picchettoItem.prev6}</Column>
                     <Column>%{props.picchettoItem.prev6quotaPerc}</Column>

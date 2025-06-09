@@ -71,6 +71,7 @@ export default function ChampionshipBoard(props) {
         d.push({ "id": "61", "name": "Ligue1" });
         d.push({ "id": "78", "name": "BundesLiga" });
         d.push({ "id": "2", "name": "Champions League" });
+        d.push({ "id": "15", "name": "Fifa world cup" });
         setChampionshipList(d)
     }
 

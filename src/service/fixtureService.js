@@ -6,7 +6,7 @@ import { defineCancelApiObject } from "./axiosUtils"
 export const FixtureAPI = {
   get: async function (id, cancel = false) {
     const response = await api.request({
-      url: `/fixtures/${id}/2024`,
+      url: `/fixtures/${id}/2025`,
       method: "GET",
       // retrieving the signal value by using the property name
       signal: cancel ? cancelApiObject[this.get.name].handleRequestCancellation().signal : undefined,
@@ -91,7 +91,7 @@ export const FixtureAPI = {
   },
 
   getFixturesStats: async function(fixtureId,championshipId, cancel = false) {
-    let url=`/fixtures/${fixtureId}/addStatisticstofixturesByChampId/${championshipId}/2024`
+    let url=`/fixtures/${fixtureId}/addStatisticstofixturesByChampId/${championshipId}/2025`
     const response = await api.request({
       url: url,
       method: "GET",

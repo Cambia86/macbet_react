@@ -1,12 +1,12 @@
-import Row from 'react-bootstrap/Row';
-export default function Championship(props) {
-    return (
+import React from "react"
 
-        <button  class="buttonNavigation" 
-            // className="btn-delete" 
-            onClick={() => props.getChampionshipById(props.id)}
-        >{props.name}:{props.id}</button> 
-       
-      
-    )   
+export default function Championship({ id, name, getChampionshipById }) {
+  return (
+    <button
+      className="buttonNavigation"
+      onClick={() => getChampionshipById(id)}
+    >
+      {name}: {id}
+    </button>
+  );
 }
