@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "build"
+     outDir: "dist" 
   },
   server: {
     host:"0.0.0.0",
@@ -14,7 +14,6 @@ export default defineConfig({
     hmr: {
       overlay:false
       // clientPort: 443 // Run the websocket server on the SSL port
-    },
-    historyApiFallback: true
+    }
   }
 });
