@@ -2,10 +2,10 @@
 import { useState, useEffect, createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route,Link  } from "react-router-dom";
-import AddPost from './components/addPost';
+// import AddPost from './components/addPost';
 import ChampionshipBoard from './components/championshipBoard';
 import PrevisionList from './components/previsionList';
-import Championship from './components/championship';
+// import Championship from './components/championship';
 import Row from 'react-bootstrap/Row';
 import Column from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
