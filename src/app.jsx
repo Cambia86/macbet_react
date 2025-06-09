@@ -44,6 +44,7 @@ export default function App() {
                     <Route path="/" element={<Layout />}>
                         <Route index element={<ChampionshipBoard />} />
                         <Route path="previsionList" element={<Tabs />} />
+                        
                         {/* <Route path="journey" element={<Journey />} />
                         <Route path="details" element={<MatchDetail />} />
                         <Route path="*" element={<NoPage />} /> */}

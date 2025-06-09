@@ -10,9 +10,9 @@ const Layout = () => {
       </div>
       <nav className="navbar-links">
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/previsionList">previsionList</a></li>
-          <li><a href="/journey">journey</a></li>
+          <li><a href="/#/">Home</a></li>
+          <li><a href="/#/previsionList">previsionList</a></li>
+          <li><a href="/#/journey">journey</a></li>
         </ul>
       </nav>
 
